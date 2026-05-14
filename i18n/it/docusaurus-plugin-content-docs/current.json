@@ -1,0 +1,482 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.documentsSidebar.category.Introduction": {
+    "message": "Introduzione",
+    "description": "The label for category Introduction in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Introduction.link.generated-index.title": {
+    "message": "Introduzione",
+    "description": "The generated-index page title for category Introduction in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Introduction.link.generated-index.description": {
+    "message": "The Aruba Cloud Platform RESTful API is available over HTTPS with JSON as data format. The paradigm uses HTTP methods and HTTP status codes to specify requests and responses.",
+    "description": "The generated-index page description for category Introduction in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Project": {
+    "message": "Project",
+    "description": "The label for category Project in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Project.link.generated-index.title": {
+    "message": "Project API",
+    "description": "The generated-index page title for category Project in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Project.link.generated-index.description": {
+    "message": "This is a description of api for interact with Project API.",
+    "description": "The generated-index page description for category Project in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Container": {
+    "message": "Container",
+    "description": "The label for category Container in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Container.link.generated-index.title": {
+    "message": "Container API",
+    "description": "The generated-index page title for category Container in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Container.link.generated-index.description": {
+    "message": "This is a description of api for interact with KaaS API.",
+    "description": "The generated-index page description for category Container in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Kaas": {
+    "message": "Kaas",
+    "description": "The label for category Kaas in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Compute": {
+    "message": "Compute",
+    "description": "The label for category Compute in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Compute.link.generated-index.title": {
+    "message": "Compute API",
+    "description": "The generated-index page title for category Compute in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Compute.link.generated-index.description": {
+    "message": "This is a description of api for interact with Compute API.",
+    "description": "The generated-index page description for category Compute in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.CloudServer": {
+    "message": "CloudServer",
+    "description": "The label for category CloudServer in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.CloudServerSnapshots": {
+    "message": "CloudServerSnapshots",
+    "description": "The label for category CloudServerSnapshots in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.KeyPair": {
+    "message": "KeyPair",
+    "description": "The label for category KeyPair in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Storage": {
+    "message": "Storage",
+    "description": "The label for category Storage in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Storage.link.generated-index.title": {
+    "message": "Storage API",
+    "description": "The generated-index page title for category Storage in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Storage.link.generated-index.description": {
+    "message": "This is a description of api for interact with Storage API.",
+    "description": "The generated-index page description for category Storage in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.BlockStorages": {
+    "message": "BlockStorages",
+    "description": "The label for category BlockStorages in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Network": {
+    "message": "Network",
+    "description": "The label for category Network in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Network.link.generated-index.title": {
+    "message": "Network API",
+    "description": "The generated-index page title for category Network in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Network.link.generated-index.description": {
+    "message": "This is a description of api for interact with Network API.",
+    "description": "The generated-index page description for category Network in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.ElasticIp": {
+    "message": "ElasticIp",
+    "description": "The label for category ElasticIp in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.LoadBalancer": {
+    "message": "LoadBalancer",
+    "description": "The label for category LoadBalancer in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.SecurityGroup": {
+    "message": "SecurityGroup",
+    "description": "The label for category SecurityGroup in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.SecurityRule": {
+    "message": "SecurityRule",
+    "description": "The label for category SecurityRule in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Subnet": {
+    "message": "Subnet",
+    "description": "The label for category Subnet in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Vpc": {
+    "message": "Vpc",
+    "description": "The label for category Vpc in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Audit": {
+    "message": "Audit",
+    "description": "The label for category Audit in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Audit.link.generated-index.title": {
+    "message": "Audit API",
+    "description": "The generated-index page title for category Audit in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Audit.link.generated-index.description": {
+    "message": "This is a description of api for interact with Audit API.",
+    "description": "The generated-index page description for category Audit in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Metric": {
+    "message": "Metric",
+    "description": "The label for category Metric in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Metric.link.generated-index.title": {
+    "message": "Metric API",
+    "description": "The generated-index page title for category Metric in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Metric.link.generated-index.description": {
+    "message": "This is a description of api for interact with Metric API.",
+    "description": "The generated-index page description for category Metric in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Metrics": {
+    "message": "Metrics",
+    "description": "The label for category Metrics in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.doc.Get Project": {
+    "message": "Get Project",
+    "description": "The label for the doc item Get Project in sidebar documentsSidebar, linking to the doc documents/project/get-project"
+  },
+  "sidebar.documentsSidebar.doc.List Project Resources": {
+    "message": "List Project Resources",
+    "description": "The label for the doc item List Project Resources in sidebar documentsSidebar, linking to the doc documents/project/list-project-resources"
+  },
+  "sidebar.documentsSidebar.doc.Create KaaS": {
+    "message": "Create KaaS",
+    "description": "The label for the doc item Create KaaS in sidebar documentsSidebar, linking to the doc documents/container/create-kaa-s"
+  },
+  "sidebar.documentsSidebar.doc.Get KaaS": {
+    "message": "Get KaaS",
+    "description": "The label for the doc item Get KaaS in sidebar documentsSidebar, linking to the doc documents/container/get-kaa-s"
+  },
+  "sidebar.documentsSidebar.doc.Update KaaS": {
+    "message": "Update KaaS",
+    "description": "The label for the doc item Update KaaS in sidebar documentsSidebar, linking to the doc documents/container/update-kaa-s"
+  },
+  "sidebar.documentsSidebar.doc.Delete KaaS": {
+    "message": "Delete KaaS",
+    "description": "The label for the doc item Delete KaaS in sidebar documentsSidebar, linking to the doc documents/container/delete-kaa-s"
+  },
+  "sidebar.documentsSidebar.doc.List KaaS": {
+    "message": "List KaaS",
+    "description": "The label for the doc item List KaaS in sidebar documentsSidebar, linking to the doc documents/container/list-kaa-s"
+  },
+  "sidebar.documentsSidebar.doc.Create CloudServer": {
+    "message": "Create CloudServer",
+    "description": "The label for the doc item Create CloudServer in sidebar documentsSidebar, linking to the doc documents/compute/1.1/create-cloud-server"
+  },
+  "sidebar.documentsSidebar.doc.Get CloudServer": {
+    "message": "Get CloudServer",
+    "description": "The label for the doc item Get CloudServer in sidebar documentsSidebar, linking to the doc documents/compute/get-cloud-server"
+  },
+  "sidebar.documentsSidebar.doc.Update CloudServer": {
+    "message": "Update CloudServer",
+    "description": "The label for the doc item Update CloudServer in sidebar documentsSidebar, linking to the doc documents/compute/update-cloud-server"
+  },
+  "sidebar.documentsSidebar.doc.Delete CloudServer": {
+    "message": "Delete CloudServer",
+    "description": "The label for the doc item Delete CloudServer in sidebar documentsSidebar, linking to the doc documents/compute/delete-cloud-server"
+  },
+  "sidebar.documentsSidebar.doc.List CloudServers": {
+    "message": "List CloudServers",
+    "description": "The label for the doc item List CloudServers in sidebar documentsSidebar, linking to the doc documents/compute/list-cloud-servers"
+  },
+  "sidebar.documentsSidebar.doc.Create CloudServerSnapshot": {
+    "message": "Create CloudServerSnapshot",
+    "description": "The label for the doc item Create CloudServerSnapshot in sidebar documentsSidebar, linking to the doc documents/compute/create-cloud-server-snapshot"
+  },
+  "sidebar.documentsSidebar.doc.Get CloudServerSnapshot": {
+    "message": "Get CloudServerSnapshot",
+    "description": "The label for the doc item Get CloudServerSnapshot in sidebar documentsSidebar, linking to the doc documents/compute/get-cloud-server-snapshot"
+  },
+  "sidebar.documentsSidebar.doc.Update CloudServerSnapshot": {
+    "message": "Update CloudServerSnapshot",
+    "description": "The label for the doc item Update CloudServerSnapshot in sidebar documentsSidebar, linking to the doc documents/compute/update-cloud-server-snapshot"
+  },
+  "sidebar.documentsSidebar.doc.Delete CloudServerSnapshot": {
+    "message": "Delete CloudServerSnapshot",
+    "description": "The label for the doc item Delete CloudServerSnapshot in sidebar documentsSidebar, linking to the doc documents/compute/delete-cloud-server-snapshot"
+  },
+  "sidebar.documentsSidebar.doc.List CloudServerSnapshot": {
+    "message": "List CloudServerSnapshot",
+    "description": "The label for the doc item List CloudServerSnapshot in sidebar documentsSidebar, linking to the doc documents/compute/list-cloud-server-snapshot"
+  },
+  "sidebar.documentsSidebar.doc.Create KeyPair": {
+    "message": "Create KeyPair",
+    "description": "The label for the doc item Create KeyPair in sidebar documentsSidebar, linking to the doc documents/compute/create-key-pair"
+  },
+  "sidebar.documentsSidebar.doc.Get KeyPair": {
+    "message": "Get KeyPair",
+    "description": "The label for the doc item Get KeyPair in sidebar documentsSidebar, linking to the doc documents/compute/get-key-pair"
+  },
+  "sidebar.documentsSidebar.doc.Update KeyPair": {
+    "message": "Update KeyPair",
+    "description": "The label for the doc item Update KeyPair in sidebar documentsSidebar, linking to the doc documents/compute/update-key-pair"
+  },
+  "sidebar.documentsSidebar.doc.Delete KeyPair": {
+    "message": "Delete KeyPair",
+    "description": "The label for the doc item Delete KeyPair in sidebar documentsSidebar, linking to the doc documents/compute/delete-key-pair"
+  },
+  "sidebar.documentsSidebar.doc.Create BlockStorage": {
+    "message": "Create BlockStorage",
+    "description": "The label for the doc item Create BlockStorage in sidebar documentsSidebar, linking to the doc documents/storage/create-block-storage"
+  },
+  "sidebar.documentsSidebar.doc.Get BlockStorage": {
+    "message": "Get BlockStorage",
+    "description": "The label for the doc item Get BlockStorage in sidebar documentsSidebar, linking to the doc documents/storage/get-block-storage"
+  },
+  "sidebar.documentsSidebar.doc.Update BlockStorage": {
+    "message": "Update BlockStorage",
+    "description": "The label for the doc item Update BlockStorage in sidebar documentsSidebar, linking to the doc documents/storage/update-block-storage"
+  },
+  "sidebar.documentsSidebar.doc.Delete BlockStorage": {
+    "message": "Delete BlockStorage",
+    "description": "The label for the doc item Delete BlockStorage in sidebar documentsSidebar, linking to the doc documents/storage/delete-block-storage"
+  },
+  "sidebar.documentsSidebar.doc.List BlockStorage": {
+    "message": "List BlockStorage",
+    "description": "The label for the doc item List BlockStorage in sidebar documentsSidebar, linking to the doc documents/storage/list-block-storage"
+  },
+  "sidebar.documentsSidebar.doc.Create ElasticIp": {
+    "message": "Create ElasticIp",
+    "description": "The label for the doc item Create ElasticIp in sidebar documentsSidebar, linking to the doc documents/network/create-elastic-ip"
+  },
+  "sidebar.documentsSidebar.doc.Get ElasticIp": {
+    "message": "Get ElasticIp",
+    "description": "The label for the doc item Get ElasticIp in sidebar documentsSidebar, linking to the doc documents/network/get-elastic-ip"
+  },
+  "sidebar.documentsSidebar.doc.Update ElasticIp": {
+    "message": "Update ElasticIp",
+    "description": "The label for the doc item Update ElasticIp in sidebar documentsSidebar, linking to the doc documents/network/update-elastic-ip"
+  },
+  "sidebar.documentsSidebar.doc.Delete ElasticIp": {
+    "message": "Delete ElasticIp",
+    "description": "The label for the doc item Delete ElasticIp in sidebar documentsSidebar, linking to the doc documents/network/delete-elastic-ip"
+  },
+  "sidebar.documentsSidebar.doc.List ElasticIp": {
+    "message": "List ElasticIp",
+    "description": "The label for the doc item List ElasticIp in sidebar documentsSidebar, linking to the doc documents/network/list-elastic-ip"
+  },
+  "sidebar.documentsSidebar.doc.Get LoadBalancer": {
+    "message": "Get LoadBalancer",
+    "description": "The label for the doc item Get LoadBalancer in sidebar documentsSidebar, linking to the doc documents/network/get-load-balancer"
+  },
+  "sidebar.documentsSidebar.doc.List LoadBalancers": {
+    "message": "List LoadBalancers",
+    "description": "The label for the doc item List LoadBalancers in sidebar documentsSidebar, linking to the doc documents/network/list-load-balancers"
+  },
+  "sidebar.documentsSidebar.doc.Create SecurityGroup": {
+    "message": "Create SecurityGroup",
+    "description": "The label for the doc item Create SecurityGroup in sidebar documentsSidebar, linking to the doc documents/network/create-security-group"
+  },
+  "sidebar.documentsSidebar.doc.Get SecurityGroup": {
+    "message": "Get SecurityGroup",
+    "description": "The label for the doc item Get SecurityGroup in sidebar documentsSidebar, linking to the doc documents/network/get-security-group"
+  },
+  "sidebar.documentsSidebar.doc.Update SecurityGroup": {
+    "message": "Update SecurityGroup",
+    "description": "The label for the doc item Update SecurityGroup in sidebar documentsSidebar, linking to the doc documents/network/update-security-group"
+  },
+  "sidebar.documentsSidebar.doc.Delete SecurityGroup": {
+    "message": "Delete SecurityGroup",
+    "description": "The label for the doc item Delete SecurityGroup in sidebar documentsSidebar, linking to the doc documents/network/delete-security-group"
+  },
+  "sidebar.documentsSidebar.doc.List SecurityGroups": {
+    "message": "List SecurityGroups",
+    "description": "The label for the doc item List SecurityGroups in sidebar documentsSidebar, linking to the doc documents/network/list-security-groups"
+  },
+  "sidebar.documentsSidebar.doc.Create a new security rule": {
+    "message": "Create a new security rule",
+    "description": "The label for the doc item Create a new security rule in sidebar documentsSidebar, linking to the doc documents/network/create-a-new-security-rule"
+  },
+  "sidebar.documentsSidebar.doc.Get an instance of security rule": {
+    "message": "Get an instance of security rule",
+    "description": "The label for the doc item Get an instance of security rule in sidebar documentsSidebar, linking to the doc documents/network/get-an-instance-of-security-rule"
+  },
+  "sidebar.documentsSidebar.doc.Update an existing security rule": {
+    "message": "Update an existing security rule",
+    "description": "The label for the doc item Update an existing security rule in sidebar documentsSidebar, linking to the doc documents/network/update-an-existing-security-rule"
+  },
+  "sidebar.documentsSidebar.doc.Delete an existing security rule": {
+    "message": "Delete an existing security rule",
+    "description": "The label for the doc item Delete an existing security rule in sidebar documentsSidebar, linking to the doc documents/network/delete-an-existing-security-rule"
+  },
+  "sidebar.documentsSidebar.doc.Search the security rules of the security groups": {
+    "message": "Search the security rules of the security groups",
+    "description": "The label for the doc item Search the security rules of the security groups in sidebar documentsSidebar, linking to the doc documents/network/search-the-security-rules-of-the-security-groups"
+  },
+  "sidebar.documentsSidebar.doc.Create Subnet": {
+    "message": "Create Subnet",
+    "description": "The label for the doc item Create Subnet in sidebar documentsSidebar, linking to the doc documents/network/create-subnet"
+  },
+  "sidebar.documentsSidebar.doc.Get Subnet": {
+    "message": "Get Subnet",
+    "description": "The label for the doc item Get Subnet in sidebar documentsSidebar, linking to the doc documents/network/get-subnet"
+  },
+  "sidebar.documentsSidebar.doc.Update Subnet": {
+    "message": "Update Subnet",
+    "description": "The label for the doc item Update Subnet in sidebar documentsSidebar, linking to the doc documents/network/update-subnet"
+  },
+  "sidebar.documentsSidebar.doc.Delete Subnet": {
+    "message": "Delete Subnet",
+    "description": "The label for the doc item Delete Subnet in sidebar documentsSidebar, linking to the doc documents/network/delete-subnet"
+  },
+  "sidebar.documentsSidebar.doc.List Subnets": {
+    "message": "List Subnets",
+    "description": "The label for the doc item List Subnets in sidebar documentsSidebar, linking to the doc documents/network/list-subnets"
+  },
+  "sidebar.documentsSidebar.doc.Create Vpc": {
+    "message": "Create Vpc",
+    "description": "The label for the doc item Create Vpc in sidebar documentsSidebar, linking to the doc documents/network/create-vpc"
+  },
+  "sidebar.documentsSidebar.doc.Get Vpc": {
+    "message": "Get Vpc",
+    "description": "The label for the doc item Get Vpc in sidebar documentsSidebar, linking to the doc documents/network/get-vpc"
+  },
+  "sidebar.documentsSidebar.doc.Update Vpc": {
+    "message": "Update Vpc",
+    "description": "The label for the doc item Update Vpc in sidebar documentsSidebar, linking to the doc documents/network/update-vpc"
+  },
+  "sidebar.documentsSidebar.doc.Delete Vpc": {
+    "message": "Delete Vpc",
+    "description": "The label for the doc item Delete Vpc in sidebar documentsSidebar, linking to the doc documents/network/delete-vpc"
+  },
+  "sidebar.documentsSidebar.doc.List Vpc": {
+    "message": "List Vpc",
+    "description": "The label for the doc item List Vpc in sidebar documentsSidebar, linking to the doc documents/network/list-vpc"
+  },
+  "sidebar.documentsSidebar.doc.Get Metrics": {
+    "message": "Get Metrics",
+    "description": "The label for the doc item Get Metrics in sidebar documentsSidebar, linking to the doc documents/metering/get-metrics"
+  },
+  "sidebar.documentsSidebar.category.1.0": {
+    "message": "1.0",
+    "description": "The label for category 1.0 in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.1.1": {
+    "message": "1.1",
+    "description": "The label for category 1.1 in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.BlockStorage": {
+    "message": "BlockStorage",
+    "description": "The label for category BlockStorage in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Events": {
+    "message": "Events",
+    "description": "The label for category Events in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Jobs": {
+    "message": "Jobs",
+    "description": "The label for category Jobs in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.AlertRules": {
+    "message": "AlertRules",
+    "description": "The label for category AlertRules in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.category.Alerts": {
+    "message": "Alerts",
+    "description": "The label for category Alerts in sidebar documentsSidebar"
+  },
+  "sidebar.documentsSidebar.doc.Create Project": {
+    "message": "Create Project",
+    "description": "The label for the doc item Create Project in sidebar documentsSidebar, linking to the doc documents/project/create-project"
+  },
+  "sidebar.documentsSidebar.doc.Update Project": {
+    "message": "Update Project",
+    "description": "The label for the doc item Update Project in sidebar documentsSidebar, linking to the doc documents/project/update-project"
+  },
+  "sidebar.documentsSidebar.doc.Delete Project": {
+    "message": "Delete Project",
+    "description": "The label for the doc item Delete Project in sidebar documentsSidebar, linking to the doc documents/project/delete-project"
+  },
+  "sidebar.documentsSidebar.doc.List Projects": {
+    "message": "List Projects",
+    "description": "The label for the doc item List Projects in sidebar documentsSidebar, linking to the doc documents/project/list-projects"
+  },
+  "sidebar.documentsSidebar.doc.List Resources": {
+    "message": "List Resources",
+    "description": "The label for the doc item List Resources in sidebar documentsSidebar, linking to the doc documents/project/list-resources"
+  },
+  "sidebar.documentsSidebar.doc.Internal Delete KaaS": {
+    "message": "Internal Delete KaaS",
+    "description": "The label for the doc item Internal Delete KaaS in sidebar documentsSidebar, linking to the doc documents/container/internal-delete-kaa-s"
+  },
+  "sidebar.documentsSidebar.doc.Power on CloudServer": {
+    "message": "Power on CloudServer",
+    "description": "The label for the doc item Power on CloudServer in sidebar documentsSidebar, linking to the doc documents/compute/power-on-cloud-server"
+  },
+  "sidebar.documentsSidebar.doc.Power off CloudServer": {
+    "message": "Power off CloudServer",
+    "description": "The label for the doc item Power off CloudServer in sidebar documentsSidebar, linking to the doc documents/compute/power-off-cloud-server"
+  },
+  "sidebar.documentsSidebar.doc.Set CloudServer Password": {
+    "message": "Set CloudServer Password",
+    "description": "The label for the doc item Set CloudServer Password in sidebar documentsSidebar, linking to the doc documents/compute/set-cloud-server-password"
+  },
+  "sidebar.documentsSidebar.doc.Restore CloudServerSnapshot": {
+    "message": "Restore CloudServerSnapshot",
+    "description": "The label for the doc item Restore CloudServerSnapshot in sidebar documentsSidebar, linking to the doc documents/compute/restore-cloud-server-snapshot"
+  },
+  "sidebar.documentsSidebar.doc.List KeyPair": {
+    "message": "List KeyPair",
+    "description": "The label for the doc item List KeyPair in sidebar documentsSidebar, linking to the doc documents/compute/list-key-pair"
+  },
+  "sidebar.documentsSidebar.doc.Gets All Auditing events": {
+    "message": "Gets All Auditing events",
+    "description": "The label for the doc item Gets All Auditing events in sidebar documentsSidebar, linking to the doc documents/auditing/gets-all-auditing-events"
+  },
+  "sidebar.documentsSidebar.doc.Create Job": {
+    "message": "Create Job",
+    "description": "The label for the doc item Create Job in sidebar documentsSidebar, linking to the doc documents/auditing/create-job"
+  },
+  "sidebar.documentsSidebar.doc.Update Job": {
+    "message": "Update Job",
+    "description": "The label for the doc item Update Job in sidebar documentsSidebar, linking to the doc documents/auditing/update-job"
+  },
+  "sidebar.documentsSidebar.doc.Delete Job": {
+    "message": "Delete Job",
+    "description": "The label for the doc item Delete Job in sidebar documentsSidebar, linking to the doc documents/auditing/delete-job"
+  },
+  "sidebar.documentsSidebar.doc.List Jobs": {
+    "message": "List Jobs",
+    "description": "The label for the doc item List Jobs in sidebar documentsSidebar, linking to the doc documents/auditing/list-jobs"
+  },
+  "sidebar.documentsSidebar.doc.Create Alert Rule": {
+    "message": "Create Alert Rule",
+    "description": "The label for the doc item Create Alert Rule in sidebar documentsSidebar, linking to the doc documents/metering/create-alert-rule"
+  },
+  "sidebar.documentsSidebar.doc.Get Alert Rules": {
+    "message": "Get Alert Rules",
+    "description": "The label for the doc item Get Alert Rules in sidebar documentsSidebar, linking to the doc documents/metering/get-alert-rules"
+  },
+  "sidebar.documentsSidebar.doc.Update Alert Rule": {
+    "message": "Update Alert Rule",
+    "description": "The label for the doc item Update Alert Rule in sidebar documentsSidebar, linking to the doc documents/metering/update-alert-rule"
+  },
+  "sidebar.documentsSidebar.doc.Delete Alert Rule": {
+    "message": "Delete Alert Rule",
+    "description": "The label for the doc item Delete Alert Rule in sidebar documentsSidebar, linking to the doc documents/metering/delete-alert-rule"
+  },
+  "sidebar.documentsSidebar.doc.List Alert rules": {
+    "message": "List Alert rules",
+    "description": "The label for the doc item List Alert rules in sidebar documentsSidebar, linking to the doc documents/metering/list-alert-rules"
+  },
+  "sidebar.documentsSidebar.doc.List Alerts": {
+    "message": "List Alerts",
+    "description": "The label for the doc item List Alerts in sidebar documentsSidebar, linking to the doc documents/metering/list-alerts"
+  }
+}

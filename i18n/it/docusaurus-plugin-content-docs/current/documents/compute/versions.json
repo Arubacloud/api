@@ -1,0 +1,12 @@
+[
+  {
+    "version": "1.0",
+    "label": "1.0",
+    "baseUrl": "docs/documents/compute/aruba-cmpservice-computing-api"
+  },
+  {
+    "version": "1.1",
+    "label": "1.1",
+    "baseUrl": "docs/documents/compute/1.1/aruba-cmpservice-computing-api"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "title": {
+    "message": "Cloud Platform",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Cloud Platform",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "Navbar item with label API"
+  },
+  "item.label.Aruba Home": {
+    "message": "Aruba Home",
+    "description": "Navbar item with label Aruba Home"
+  }
+}

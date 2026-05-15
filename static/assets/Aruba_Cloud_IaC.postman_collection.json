@@ -1,0 +1,2679 @@
+{
+	"info": {
+		"_postman_id": "4f01fcba-6125-45af-8125-3a3532c6183a",
+		"name": "Aruba Cloud IaC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26588366"
+	},
+	"item": [
+		{
+			"name": "00-Authentication",
+			"item": [
+				{
+					"name": "01-Get Client Credential Access Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"api_access_token\", res.access_token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://mylogin.aruba.it/auth/realms/cmp-new-apikey/protocol/openid-connect/token",
+							"protocol": "https",
+							"host": [
+								"login",
+								"aruba",
+								"it"
+							],
+							"path": [
+								"auth",
+								"realms",
+								"cmp-new-apikey",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "01-Projects",
+			"item": [
+				{
+					"name": "List Projects",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{web_auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"projectIdCreated\", jsonData.metadata.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{web_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"metadata\": {\r\n    \"name\": \"project-test-1\",\r\n    \"tags\": [\r\n      \"string\"\r\n    ]\r\n  },\r\n  \"properties\": {\r\n    \"description\": \"string\",\r\n    \"default\": false\r\n  }\r\n\r\n}"
+						},
+						"url": {
+							"raw": "{{api_gateway}}/projects",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "payload",
+									"value": "{}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project Resources",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": [
+								{
+									"key": "algorithm",
+									"value": "HS256",
+									"type": "string"
+								},
+								{
+									"key": "isSecretBase64Encoded",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "payload",
+									"value": "{}",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "queryParamKey",
+									"value": "token",
+									"type": "string"
+								},
+								{
+									"key": "header",
+									"value": "{}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/resources",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}",
+								"resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{web_auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"metadata\": {\r\n    \"name\": \"project-test-1-mod\"   \r\n  },\r\n  \"properties\": {\r\n    \"description\": \"description-mod\"\r\n   \r\n  }\r\n\r\n}"
+						},
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{web_auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02-Aruba.Network",
+			"item": [
+				{
+					"name": "Vpc",
+					"item": [
+						{
+							"name": "Create Vpc",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"vpcIdCreated\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"vpc-test-1\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2\"\r\n      ],\r\n      \"location\": {\r\n        \"value\": \"ITBG-Bergamo\"\r\n       }\r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Vpc",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Vpc",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Vpc",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"vpc-test-1\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2-mod\"\r\n      ],\r\n      \"location\": {\r\n        \"value\": \"ITBG-Bergamo\"\r\n       }\r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Vpc",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/providers/projects/{{projectId}}/Aruba.Network/vpcs/$vpcId",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"providers",
+										"projects",
+										"{{projectId}}",
+										"Aruba.Network",
+										"vpcs",
+										"$vpcId"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Subnet",
+					"item": [
+						{
+							"name": "List Subnet",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"subnets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Subnet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"subnetIdCreated\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"subnet-api-1\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2\"\r\n      ]\r\n   },\r\n   \"properties\":{\r\n      \"type\":\"Advanced\",\r\n      \"default\":true,\r\n      \"network\":{\r\n         \"address\":\"192.168.1.0/25\"\r\n      },\r\n      \"dhcp\":{\r\n         \"enabled\":true         \r\n      }\r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"subnets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Subnet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{subnetIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"subnets",
+										"{{subnetIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Subnet",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"subnet-api-1-mod\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2-mod\"\r\n      ]\r\n   },\r\n   \"properties\":{\r\n      \"type\":\"Advanced\",\r\n      \"default\":true,\r\n      \"network\":{\r\n         \"address\":\"192.168.6.0/24\"\r\n      },\r\n      \"dhcp\":{\r\n         \"enabled\":false         \r\n      }\r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{subnetIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"subnets",
+										"{{subnetIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Subnet",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/providers/projects/{{projectId}}/Aruba.Network/vpcs/$vpcId/subnets/$subnetId",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"providers",
+										"projects",
+										"{{projectId}}",
+										"Aruba.Network",
+										"vpcs",
+										"$vpcId",
+										"subnets",
+										"$subnetId"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SecurityGroup",
+					"item": [
+						{
+							"name": "List SecurityGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create SecurityGroup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"sgIdCreated\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"sg-test-1\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2\"\r\n      ],\r\n      \"location\":{\r\n        \"value\":\"ITBG-Bergamo\"\r\n      }\r\n   },\r\n   \"properties\":{\r\n      \"default\":false     \r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get SecurityGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update SecurityGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"sg-test-1-mod\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2-mod\"\r\n      ],\r\n      \"location\":{\r\n        \"value\":\"ITBG-Bergamo\"\r\n      }\r\n   },\r\n   \"properties\":{\r\n      \"default\":false     \r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete SecurityGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SecurityRules",
+					"item": [
+						{
+							"name": "List SecurityRule",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}/securityRules",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}",
+										"securityRules"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create SecurityRule",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"srEgressIdCreated\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"metadata\": {\r\n        \"name\":\"sg-entry-rule-1\"\r\n    },\r\n    \"properties\":{       \r\n        \"protocol\":\"TCP\",\r\n        \"port\": \"80-90\",\r\n        \"direction\": \"Egress\",\r\n        \"target\": {\r\n            \"kind\":\"Ip\",\r\n            \"value\": \"0.0.0.0/0\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}/securityRules",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}",
+										"securityRules"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update SecurityRule",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"metadata\": {\r\n        \"name\":\"sg-entry-rule-1-mod\"\r\n    },\r\n    \"properties\":{       \r\n        \"protocol\":\"TCP\",\r\n        \"port\": \"80-90\",\r\n        \"direction\": \"Egress\",\r\n        \"target\": {\r\n            \"kind\":\"Ip\",\r\n            \"value\": \"0.0.0.0/0\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}/securityRules/{{srEgressIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}",
+										"securityRules",
+										"{{srEgressIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get SecurityRule",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}/securityRules/{{srEgressIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}",
+										"securityRules",
+										"{{srEgressIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete SecurityRule",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}/securityRules/{{srEgressIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"vpcs",
+										"{{vpcIdCreated}}",
+										"securityGroups",
+										"{{sgIdCreated}}",
+										"securityRules",
+										"{{srEgressIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ElasticIp",
+					"item": [
+						{
+							"name": "List ElasticIp",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/elasticIps",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"elasticIps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create ElasticIp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"elasticIpIdCreated\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"ip-test-1\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2\"\r\n      ],\r\n      \"location\": {\r\n        \"value\": \"ITBG-Bergamo\"\r\n       }\r\n   },   \r\n   \"properties\":{     \r\n      \"billingPlan\": {\r\n        \"billingPeriod\": \"Hour\"\r\n      }\r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/elasticIps",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"elasticIps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get ElasticIp",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/elasticIps/{{elasticIpIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"elasticIps",
+										"{{elasticIpIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update ElasticIp",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"metadata\":{\r\n      \"name\":\"ip-test-1-mod\",\r\n      \"tags\":[\r\n         \"tag-1\",\r\n         \"tag-2-mod\"\r\n      ],\r\n      \"location\": {\r\n        \"value\": \"ITBG-Bergamo\"\r\n       }\r\n   },   \r\n   \"properties\":{     \r\n      \"billingPlan\": {\r\n        \"billingPeriod\": \"Hour\"\r\n      }\r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/elasticIps/{{elasticIpIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"elasticIps",
+										"{{elasticIpIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete ElasticIp",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/elasticIps/{{elasticIpIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"elasticIps",
+										"{{elasticIpIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "LoadBalancer",
+					"item": [
+						{
+							"name": "List LoadBalancer",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/loadBalancers",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"loadBalancers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get LoadBalancer",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Network/loadBalancers/66dac979393c6c8150bfb76a",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Network",
+										"loadBalancers",
+										"66dac979393c6c8150bfb76a"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "02-Aruba.Container",
+			"item": [
+				{
+					"name": "List KaaS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Container/kaas",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}",
+								"providers",
+								"Aruba.Container",
+								"kaas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create KaaS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"kaasIdCreated\", jsonData.metadata.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"metadata\": {\r\n  \"name\": \"kaas-test-1\",\r\n  \"location\": {\r\n        \"value\": \"ITBG-Bergamo\"   \r\n  },\r\n  \"tags\": [\r\n    \"tag1\"\r\n  ]\r\n  },\r\n  \"properties\": {\r\n    \"preset\": false,\r\n    \"vpc\": {\r\n      \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}\"\r\n    },\r\n    \"kubernetesVersion\": {\r\n      \"value\": \"1.29.2\"\r\n    },\r\n    \"subnet\": {\r\n      \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{subnetIdCreated}}\"\r\n    },\r\n    \"nodeCidr\": {\r\n      \"address\": \"192.168.59.0/25\",\r\n      \"name\": \"kaas-test-cidr\"\r\n    },\r\n    \"securityGroup\": {\r\n      \"name\": \"kaas-test-sg\"\r\n    },\r\n    \"nodePools\": [\r\n      {\r\n        \"name\": \"nd-1\",\r\n        \"nodes\": 1,\r\n        \"instance\": \"K2A4\",\r\n        \"dataCenter\": \"ITBG-1\"\r\n      }\r\n    ],\r\n    \"ha\": false,\r\n    \"billingPlan\": {\r\n      \"billingPeriod\": \"Hour\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Container/kaas",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}",
+								"providers",
+								"Aruba.Container",
+								"kaas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Kaas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Container/kaas/{{kaasIdCreated}}",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}",
+								"providers",
+								"Aruba.Container",
+								"kaas",
+								"{{kaasIdCreated}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Kaas config",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Container/kaas/{{kaasIdCreated}}/download",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}",
+								"providers",
+								"Aruba.Container",
+								"kaas",
+								"{{kaasIdCreated}}",
+								"download"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update KaaS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"metadata\": {\r\n  \"name\": \"kaas-test-1-mod\",\r\n  \"location\": {\r\n        \"value\": \"ITBG-Bergamo\"   \r\n  },\r\n  \"tags\": [\r\n    \"tag1\"\r\n  ]\r\n  },\r\n  \"properties\": {\r\n    \"preset\": false,\r\n    \"vpc\": {\r\n      \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}\"\r\n    },\r\n    \"kubernetesVersion\": {\r\n      \"value\": \"1.29.2\"\r\n    },\r\n    \"subnet\": {\r\n      \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{subnetIdCreated}}\"\r\n    },\r\n    \"nodeCidr\": {\r\n      \"address\": \"192.168.59.0/25\",\r\n      \"name\": \"kaas-test-cidr\"\r\n    },\r\n    \"securityGroup\": {\r\n      \"name\": \"kaas-test-sg\"\r\n    },\r\n    \"nodePools\": [\r\n      {\r\n        \"name\": \"nd-1\",\r\n        \"nodes\": 1,\r\n        \"instance\": \"K2A4\",\r\n        \"dataCenter\": \"ITBG-1\"\r\n      },\r\n      {\r\n        \"name\": \"nd-2\",\r\n        \"nodes\": 1,\r\n        \"instance\": \"K4A8\",\r\n        \"dataCenter\": \"ITBG-2\"\r\n      }\r\n    ],\r\n    \"ha\": false,\r\n    \"billingPlan\": {\r\n      \"billingPeriod\": \"Hour\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Container/kaas/{{kaasIdCreated}}",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}",
+								"providers",
+								"Aruba.Container",
+								"kaas",
+								"{{kaasIdCreated}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Kaas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Container/kaas/{{kaasIdCreated}}",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"projects",
+								"{{projectIdCreated}}",
+								"providers",
+								"Aruba.Container",
+								"kaas",
+								"{{kaasIdCreated}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03-Aruba.Compute",
+			"item": [
+				{
+					"name": "CloudServer",
+					"item": [
+						{
+							"name": "List CloudServer",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/cloudServers",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"cloudServers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create CloudServer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"csIdCreated\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"metadata\": {\r\n    \"name\": \"cloud-server-1-win\",\r\n    \"location\": {\r\n      \"value\": \"ITBG-Bergamo\"\r\n    },\r\n    \"tags\": [\r\n      \"tag-1\"\r\n    ]\r\n  },\r\n  \"properties\": {\r\n   \r\n    \"dataCenter\": \"ITBG-1\",\r\n    \"vpc\": {\r\n      \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}\"\r\n    },\r\n    \"vpcPreset\": false,\r\n    \"flavorId\": \"b5052a43-60d0-4041-9d5d-448d30c48f0c\", //CSO2A4\r\n    \"template\": {\r\n      \"uri\": \"/providers/Aruba.Compute/templates/65f42d72d82fd1d45ce03b0a\" //windpws\r\n    },\r\n    \"addElasticIp\": false,\r\n    /*\"elasticIp\": {\r\n      \"uri\": \"string\"\r\n    },*/\r\n    /*\"keyPair\": {\r\n      \"uri\": \"string\"\r\n    },*/\r\n    \"subnets\": [\r\n      {\r\n         \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{subnetIdCreated}}\"\r\n      }\r\n    ],\r\n    \"securityGroups\": [\r\n      {\r\n         \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}\"\r\n      }\r\n    ]\r\n    /*\",volumes\": [\r\n      {\r\n        \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Storage/vpcs/{{vpcIdCreated}}/blockStorages/{{volumeIdCreated}}\" \r\n      }\r\n    ]*/\r\n  }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/cloudServers?api-version=1.1",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"cloudServers"
+									],
+									"query": [
+										{
+											"key": "api-version",
+											"value": "1.1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get CloudServer",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/cloudServers/{{csIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"cloudServers",
+										"{{csIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update CloudServer",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"metadata\": {\r\n    \"name\": \"cloud-server-1-mod\",\r\n    \"location\": {\r\n      \"value\": \"ITBG-Bergamo\"\r\n    },\r\n    \"tags\": [\r\n      \"tag-1-mod\"\r\n    ]\r\n  },\r\n  \"properties\": {\r\n   \r\n    \"dataCenter\": \"ITBG-1\",\r\n    \"vpc\": {\r\n      \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}\"\r\n    },\r\n    \"vpcPreset\": false,\r\n    \"flavorId\": \"b5052a43-60d0-4041-9d5d-448d30c48f0c\", //CSO2A4\r\n    \"template\": {\r\n      \"uri\": \"/providers/Aruba.Compute/templates/65f42d72d82fd1d45ce03b0a\" //windpws\r\n    },\r\n    \"addElasticIp\": false,\r\n    \"elasticIp\": {\r\n      \"uri\": \"string\"\r\n    },\r\n    /*\"keyPair\": {\r\n      \"uri\": \"string\"\r\n    },*/\r\n    \"initialPassword\": \"Aruba2024!\",\r\n    \"subnets\": [\r\n      {\r\n         \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{subnetIdCreated}}\"\r\n      }\r\n    ],\r\n    \"securityGroups\": [\r\n      {\r\n         \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{sgIdCreated}}\"\r\n      }\r\n    ],\r\n    \"volumes\": [\r\n      {\r\n        \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Storage/vpcs/{{vpcIdCreated}}/blockStorages/{{volumeIdCreated}}\" \r\n      }\r\n    ]\r\n  }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/providers/projects/{{projectId}}/Aruba.Compute/cloudServers/{{csIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"providers",
+										"projects",
+										"{{projectId}}",
+										"Aruba.Compute",
+										"cloudServers",
+										"{{csIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete CloudServer",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/providers/projects/{{projectIdCreated}}/Aruba.Compute/cloudServers/{{csIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"providers",
+										"projects",
+										"{{projectIdCreated}}",
+										"Aruba.Compute",
+										"cloudServers",
+										"{{csIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create CloudServer Ubuntu",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"csIdCreatedUbuntu\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"metadata\": {\r\n    \"name\": \"cloud-server-2-ubuntu\",\r\n    \"location\": {\r\n      \"value\": \"ITBG-Bergamo\"\r\n    },\r\n    \"tags\": [\r\n      \"tag-1\"\r\n    ]\r\n  },\r\n  \"properties\": {\r\n   \r\n    \"dataCenter\": \"ITBG-1\",\r\n    \"vpc\": {\r\n      \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}\"\r\n    },\r\n    \"vpcPreset\": false,\r\n    \"flavorId\": \"ee8e150d-9c47-4d0d-a4f5-34c6166051ed\", //CSO4A8\r\n    \"template\": {\r\n      \"uri\": \"/providers/Aruba.Compute/templates/66045544b146b450ddb90975\" //ubuntu 22 64bit\r\n    },\r\n    \"addElasticIp\": false,\r\n    /*\"elasticIp\": {\r\n      \"uri\": \"string\"\r\n    },*/\r\n    \"keyPair\": {\r\n      \"uri\": \"/projects/66dac1a6e04c9f5102df7719/providers/Aruba.Compute/keyPairs/{{keyPairIdCreated}}\"\r\n    },\r\n    \"initialPassword\": \"Aruba2024!\",\r\n    \"subnets\": [\r\n      {\r\n         \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/subnets/{{subnetIdCreated}}\"\r\n      }\r\n    ],\r\n    \"securityGroups\": [\r\n      {\r\n         \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Network/vpcs/{{vpcIdCreated}}/securityGroups/{{sgIdCreated}}\"\r\n      }\r\n    ]\r\n    /*\",volumes\": [\r\n      {\r\n        \"uri\": \"/projects/{{projectIdCreated}}/providers/Aruba.Storage/vpcs/{{vpcIdCreated}}/blockStorages/{{volumeIdCreated}}\" \r\n      }\r\n    ]*/\r\n  }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/cloudServers",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"cloudServers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get CloudServer Ubuntu",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/cloudServers/{{csIdCreatedUbuntu}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"cloudServers",
+										"{{csIdCreatedUbuntu}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete CloudServer Ubuntu",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/cloudServers/{{csIdCreatedUbuntu}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"cloudServers",
+										"{{csIdCreatedUbuntu}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CloudServer-KeyPair",
+					"item": [
+						{
+							"name": "List KeyPairs",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/keyPairs",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"keyPairs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create KeyPair",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"keyPairIdCreated\", jsonData.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"metadata\": {\r\n    \"name\": \"key-test-1\",\r\n    \"location\": {\r\n      \"value\": \"ITBG-Bergamo\"   \r\n    },\r\n    \"tags\": [\r\n      \"tag-1\"\r\n    ]\r\n  },\r\n   \"properties\": {\r\n    \r\n    \"value\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC6JqByfkVm64u7emAJMmHx3gNTuorCn/RmLvozgz67MWUCygTtcRHBBS8WAANkSRLCN/r/VDGFBB5N9PzK5V5ONE/VSFGD63V861vu8mslpNHtL6gN2y1mqDzl3vi0ebZv2t6ArsdFKPx1gqsP6kavIAos7ZFgbJsmRNO2V71dK+YPeubxpMPezVBrMxDSLmA0In6z3foFTGB7iZDnQ2Yj0u/Kukf7SfPgaWaegSu/yQVDG+wLQ84d6ti6vdRyjauGvqQjdYldcvdjoG7OlAxC/TRCdwFeq4u6p73IVZoz9Xq99smnOtLu7qGCzW6g/+RNHSPSpz9+R6AKGjUPPFj29+WKJRnesdnb6rRmTyUDsezuu8z/rbthlgDYI3GaT+Sauap9lwuoVcSKKCt1GvMUC180csxVGAMz3MPN0X+pvbAqjNJmGt5lMaRrZ4BROL+PI3PDTTEPniOW+8doQEWZUA3HPthwneQ3emuqGSL3i1W5uJgSvTbAv+nXnrDK2qk=\"\r\n  }\r\n  \r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/keyPairs",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"keyPairs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get KeyPair",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/keyPairs/{{keyPairIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"keyPairs",
+										"{{keyPairIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update KeyPair",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"metadata\": {\r\n    \"name\": \"volume-1-mod\",\r\n    \"location\": {\r\n      \"value\": \"ITBG-Bergamo\"   \r\n    },\r\n    \"tags\": [\r\n      \"tag-1\"\r\n    ]\r\n  }\r\n  \r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/keyPairs/{{keyPairIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"keyPairs",
+										"{{keyPairIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete KeyPair",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Compute/keyPairs/{{keyPairIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Compute",
+										"keyPairs",
+										"{{keyPairIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "04-Aruba.Storage",
+			"item": [
+				{
+					"name": "BlockStorage",
+					"item": [
+						{
+							"name": "List BlockStorage",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Storage/blockStorages",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Storage",
+										"blockStorages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create BlockStorage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"volumeIdCreated\", jsonData.metadata.id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "accept",
+										"value": "text/plain"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"metadata\": {\r\n    \"name\": \"volume-1\",\r\n    \"location\": {\r\n      \"value\": \"ITBG-Bergamo\"   \r\n    },\r\n    \"tags\": [\r\n      \"tag-1\"\r\n    ]\r\n  },\r\n  \"properties\": {\r\n    \"sizeGb\": 10,\r\n    \"billingPeriod\": \"Hour\",\r\n     \"dataCenter\": \"ITBG-1\"\r\n  }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Storage/blockStorages",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Storage",
+										"blockStorages"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get BlockStorage",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Storage/blockStorages/{{volumeIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Storage",
+										"blockStorages",
+										"{{volumeIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update BlockStorage",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"metadata\": {\r\n    \"name\": \"volume-1-mod\",\r\n    \"location\": {\r\n      \"value\": \"ITBG-Bergamo\"   \r\n    },\r\n    \"tags\": [\r\n      \"tag-1-mod\"\r\n    ]\r\n  },\r\n  \"properties\": {\r\n    \"sizeGb\": 10,\r\n    \"billingPeriod\": \"Hour\",\r\n     \"dataCenter\": \"ITBG-1\"\r\n  }\r\n}"
+								},
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Storage/blockStorages/{{volumeIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Storage",
+										"blockStorages",
+										"{{volumeIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete BlockStorage",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_gateway}}/projects/{{projectIdCreated}}/providers/Aruba.Storage/blockStorages/{{volumeIdCreated}}",
+									"host": [
+										"{{api_gateway}}"
+									],
+									"path": [
+										"projects",
+										"{{projectIdCreated}}",
+										"providers",
+										"Aruba.Storage",
+										"blockStorages",
+										"{{volumeIdCreated}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "client_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "client_secret",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "api_gateway",
+			"value": "https://api.arubacloud.com",
+			"type": "string"
+		},
+		{
+			"key": "api_access_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

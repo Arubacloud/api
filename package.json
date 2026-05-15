@@ -14,8 +14,9 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "gen-api-docs": "docusaurus gen-api-docs all",
     "clean-api-docs": "docusaurus clean-api-docs all",
-    "gen-api-docs:version": "docusaurus gen-api-docs:version compute 1.1",
-    "clean-api-docs:version": "docusaurus clean-api-docs:version compute 1.1"
+    "gen-api-docs:version": "docusaurus gen-api-docs:version compute:1.1",
+    "clean-api-docs:version": "docusaurus clean-api-docs:version compute:1.1",
+    "postinstall": "node postinstall.js"
   },
   "dependencies": {
     "@docusaurus/core": "^3.7.0",

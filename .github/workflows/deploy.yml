@@ -42,8 +42,8 @@ jobs:
       - name: Build website
         run: npm run build
         env:
-          URL: ${{ vars.SITE_URL }}
-          BASE_URL: ${{ vars.BASE_URL || '/' }}
+          URL: ${{ vars.SITE_URL || 'https://arubacloud.github.io' }}
+          BASE_URL: ${{ vars.BASE_URL || '/api/' }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

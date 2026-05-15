@@ -15,10 +15,10 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: process.env.URL || 'https://your-docusaurus-site.example.com',
+  url: process.env.URL || 'https://arubacloud.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl:  process.env.BASE_URL || "/",
+  baseUrl: process.env.BASE_URL || '/api/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.

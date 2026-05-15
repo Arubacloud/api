@@ -87,8 +87,6 @@ const sidebars = {
           description: 'Computing', // The external URL
         },  
         {
-          'v1.0': require("./docs/documents/compute/sidebar.ts")
-          ,
           'v1.1': require("./docs/documents/compute/1.1/sidebar.ts")
         }
       ]

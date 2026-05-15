@@ -1,5 +1,5 @@
 export default {
-  displayName: 'cmp-catalog-api',
+  displayName: 'arubacloud-api-portal',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {

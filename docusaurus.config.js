@@ -302,7 +302,21 @@ const config = {
       ],
       [
         require.resolve('./plugins/custom-encoding'),{}
-      ]
+      ],
+      function webpackFallbackPlugin() {
+        return {
+          name: 'webpack-fallback-plugin',
+          configureWebpack() {
+            return {
+              resolve: {
+                fallback: {
+                  path: false,
+                },
+              },
+            };
+          },
+        };
+      },
       // [
       //   require.resolve("@cmfcmf/docusaurus-search-local"),
       //   {

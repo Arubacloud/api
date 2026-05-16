@@ -119,12 +119,48 @@ const config = {
             //href: ({ locale }) => locale === 'it' ?  'https://cloud.it/' : 'https://cloud.com/',
             label: "Aruba Home",
             position: "right",
+          },
+          {
+            href: "https://github.com/Arubacloud/api",
+            label: "GitHub",
+            position: "right",
           }
         ],
       },
       footer: {
         style: 'dark',
         links: [
+          {
+            title: 'Docs',
+            items: [
+              {
+                label: 'Getting Started',
+                to: '/docs/intro',
+              },
+              {
+                label: 'API Reference',
+                to: '/docs/intro',
+              },
+            ],
+          },
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/Arubacloud/api',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'Changelog',
+                to: '/changelog',
+              },
+            ],
+          },
         ],
         copyright: `<div style="text-align: start;">
         <small>Copyright © ${new Date().getFullYear()} Aruba S.p.A. - via San Clemente, 53 - 24036 Ponte San Pietro (BG) <br>

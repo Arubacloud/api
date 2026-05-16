@@ -139,7 +139,7 @@ const config = {
               },
               {
                 label: 'API Reference',
-                to: '/docs',
+                to: '/docs/intro',
               },
             ],
           },
@@ -157,7 +157,7 @@ const config = {
             items: [
               {
                 label: 'Changelog',
-                to: '/CHANGELOG.md',
+                to: '/changelog',
               },
             ],
           },

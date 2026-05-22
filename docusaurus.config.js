@@ -161,6 +161,10 @@ const config = {
                 label: 'Changelog',
                 to: '/changelog',
               },
+              {
+                label: 'Report an Issue',
+                href: 'https://github.com/Arubacloud/api/issues/new/choose',
+              },
             ],
           },
         ],

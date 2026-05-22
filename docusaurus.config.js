@@ -36,10 +36,12 @@ const config = {
     locales: ['en','it'],
     localeConfigs: {
       en: {
-        htmlLang: 'en-GB',
+        label: 'English',
+        htmlLang: 'en-US',
       },
       // You can omit a locale (e.g. fr) if you don't need to override the defaults
       it: {
+        label: 'Italiano',
         htmlLang:'it-IT',
       },
     },

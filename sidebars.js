@@ -79,18 +79,24 @@ const sidebars = {
         slug: "docs/documents/compute/aruba-cmpservice-computing-api",
       },
       //items: versionedSidebar
-      items:[  
+      items:[
         {
           type: 'link',
-          label: 'Link to KB', // The link label
+          label: 'Link to KB',
           href: 'https://kb.cloud.it/cmp/computing.aspx',
-          description: 'Computing', // The external URL
-        },  
+          description: 'Computing',
+        },
         {
-          'v1.1': require("./docs/documents/compute/1.1/sidebar.ts")
-        }
+          type: 'category',
+          label: '1.0',
+          items: require("./docs/documents/compute/sidebar.ts"),
+        },
+        {
+          type: 'category',
+          label: '1.1',
+          items: require("./docs/documents/compute/1.1/sidebar.ts"),
+        },
       ]
-      //items: [require("./docs/documents/compute/sidebar.ts")]//,require("./docs/documents/compute/1.1/sidebar.ts")],
     },
     {
       type: "category",

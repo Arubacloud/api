@@ -15,7 +15,7 @@ function customEncodingPlugin(context, options) {
               tagName: 'script',
               attributes: {
                 type: 'text/javascript',
-                src: '/js/requestInterceptor.js',
+                src: '/api/js/requestInterceptor.js',
               },
             }
           ],

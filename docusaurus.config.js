@@ -53,7 +53,7 @@ const config = {
     //   async: false,
     // },
     {
-      src: '/js/gtmscript.js',
+      src: '/api/js/gtmscript.js',
       async: false,
     },
 

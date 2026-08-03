@@ -223,11 +223,6 @@ const sidebars = {
       },
       items: require("./docs/documents/baremetal/sidebar.ts"),
     },
-    {
-      type: "doc",
-      id: "changelog",
-      label: "Changelog",
-    },
 
 
   ],

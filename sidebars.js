@@ -222,8 +222,12 @@ const sidebars = {
         slug: "docs/documents/baremetal/aruba-baremetal-provider-api",
       },
       items: require("./docs/documents/baremetal/sidebar.ts"),
-    }
-
+    },
+    {
+      type: "doc",
+      id: "changelog",
+      label: "Changelog",
+    },
 
 
   ],

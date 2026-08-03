@@ -159,7 +159,7 @@ const config = {
             items: [
               {
                 label: 'Changelog',
-                to: '/changelog',
+                to: '/docs/changelog',
               },
               {
                 label: 'Report an Issue',

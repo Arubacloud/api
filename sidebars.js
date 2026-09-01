@@ -223,6 +223,18 @@ const sidebars = {
       },
       items: require("./docs/documents/baremetal/sidebar.ts"),
     },
+            {
+      type: "category",
+      label: "Catalog",
+      link: {
+        type: "generated-index",
+        title: "Catalog API",
+        description:
+          "This is a description of api for interact with Catalog API.",
+        slug: "docs/documents/sdn/aruba-catalog-api",
+      },
+      items: require("./docs/documents/catalog/sidebar.ts"),
+    }
 
 
   ],

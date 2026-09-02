@@ -44,7 +44,7 @@ Lista dei possibili valori:
 ### CloudServer Flavors
 Lista delle taglie possibili per i CloudServer. **È necessario utilizzare il nome nel body dell'API**:
 :::info
-To retrieve the latest list, use the [API](/api/docs/documents/compute/list-cloud-server-flavors).
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/compute/list-cloud-server-flavors).
 :::
 ### Cloud Server Linux
 
@@ -89,7 +89,7 @@ To retrieve the latest list, use the [API](/api/docs/documents/compute/list-clou
 ### KaaS Flavors
 Lista delle taglie possibili dei nodi del KaaS: **È necessario utilizzare il nome nel body dell'API**
 :::info
-To retrieve the latest list, use the [API](/api/docs/documents/container/list-kaas-flavors).
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/container/list-kaas-flavors).
 :::
 
 |Name | CPU   | Ram (GB) | Storage (GB) |
@@ -113,7 +113,7 @@ To retrieve the latest list, use the [API](/api/docs/documents/container/list-ka
 Per creare un KaaS è necessario specificare la versione di Kubernetes.
 Attualmente le versioni di kubernetes disponibili sono le seguenti: 
 :::info
-To retrieve the latest list, use the [API](/api/docs/documents/container/list-kubernetes-versions).
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/container/list-kubernetes-versions).
 :::
 
 | Version |
@@ -128,7 +128,7 @@ To retrieve the latest list, use the [API](/api/docs/documents/container/list-ku
 
 Lista delle taglie possibili per DBaaS. **È necessario utilizzare il nome del flavor nel body dell'API**
 :::info
-To retrieve the latest list, use the [API](/api/docs/documents/database/list-dbaas-engine).
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/database/list-dbaas-engine).
 :::
 <table>
   <thead>
@@ -170,7 +170,7 @@ To retrieve the latest list, use the [API](/api/docs/documents/database/list-dba
 ### DBaaS Flavors
 Lista degli engines disponibili per DBaaS. **È necessario utilizzare il nome nel body dell'API**
 :::info
-To retrieve the latest list, use the [API](/api/docs/documents/database/list-dbaas-flavor).
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/database/list-dbaas-flavor).
 :::
 <table>
   <thead>
@@ -279,7 +279,7 @@ To retrieve the latest list, use the [API](/api/docs/documents/database/list-dba
 
 Per creare una qualunque risorsa della CMP è necessario specificare Location e Data Center di riferimento.
 :::info
-To retrieve the latest list, use the [API](/api/docs/documents/catalog/list-location-and-data-center).
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/catalog/list-location-and-data-center).
 :::
 Di seguito l'elenco dei possibili valori:
 

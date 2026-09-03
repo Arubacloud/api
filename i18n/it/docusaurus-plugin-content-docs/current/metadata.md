@@ -43,7 +43,9 @@ Lista dei possibili valori:
 
 ### CloudServer Flavors
 Lista delle taglie possibili per i CloudServer. **È necessario utilizzare il nome nel body dell'API**:
-
+:::info
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/compute/list-cloud-server-flavors).
+:::
 ### Cloud Server Linux
 
 |Name | CPU   | Ram (GB) |
@@ -86,7 +88,9 @@ Lista delle taglie possibili per i CloudServer. **È necessario utilizzare il no
 
 ### KaaS Flavors
 Lista delle taglie possibili dei nodi del KaaS: **È necessario utilizzare il nome nel body dell'API**
-
+:::info
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/container/list-kaas-flavors).
+:::
 
 |Name | CPU   | Ram (GB) | Storage (GB) |
 | :---| :---: | :---:    |  :---:       |
@@ -108,6 +112,9 @@ Lista delle taglie possibili dei nodi del KaaS: **È necessario utilizzare il no
 
 Per creare un KaaS è necessario specificare la versione di Kubernetes.
 Attualmente le versioni di kubernetes disponibili sono le seguenti: 
+:::info
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/container/list-kubernetes-versions).
+:::
 
 | Version |
 | :---    |
@@ -120,7 +127,9 @@ Attualmente le versioni di kubernetes disponibili sono le seguenti:
 ### DBaaS Engines
 
 Lista delle taglie possibili per DBaaS. **È necessario utilizzare il nome del flavor nel body dell'API**
-
+:::info
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/database/list-dbaas-engine).
+:::
 <table>
   <thead>
     <tr>
@@ -159,7 +168,10 @@ Lista delle taglie possibili per DBaaS. **È necessario utilizzare il nome del f
 </table>
 
 ### DBaaS Flavors
-Lista degli engines disponibili per DBaaS. **È necessario utilizzare il nome nel body dell'AP**
+Lista degli engines disponibili per DBaaS. **È necessario utilizzare il nome nel body dell'API**
+:::info
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/database/list-dbaas-flavor).
+:::
 <table>
   <thead>
     <tr>
@@ -263,13 +275,12 @@ Lista degli engines disponibili per DBaaS. **È necessario utilizzare il nome ne
 </table>
 
 
-
-
-
 ## Location and Data Center
 
 Per creare una qualunque risorsa della CMP è necessario specificare Location e Data Center di riferimento.
-
+:::info
+Per ottenere la lista aggiornata, utilizzare l'[API](/docs/documents/catalog/list-location-and-data-center).
+:::
 Di seguito l'elenco dei possibili valori:
 
 | Location     | DataCenter |

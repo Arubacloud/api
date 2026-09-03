@@ -336,7 +336,17 @@ const config = {
                 groupPathsBy: "tag",
                 categoryLinkSource: "tag"
               }
-            }, 
+            },
+            catalog:{
+              specPath: "static/openapi/catalog.json",
+              outputDir: "docs/documents/catalog",
+              label: "Catalog",
+              //proxy: process.env.PROXY_URL,
+              sidebarOptions: {
+                groupPathsBy: "tag",
+                categoryLinkSource: "tag"
+              }
+            }    
 
           },
         },

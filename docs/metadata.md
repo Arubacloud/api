@@ -43,7 +43,9 @@ List of possible values:
 
 ### CloudServer Flavors
 List of possible sizes for CloudServers. **You need to use the name in the body of the API**:
-
+:::info
+To retrieve the latest list, use the [API](/api/docs/documents/compute/list-cloud-server-flavors).
+:::
 #### Cloud Server Linux
 
 |Name | CPU   | Ram (GB) |
@@ -85,7 +87,9 @@ List of possible sizes for CloudServers. **You need to use the name in the body 
 ### KaaS Flavors
 
 List of possible sizes of KaaS nodes: **You need to use the name in the API body**
-
+:::info
+To retrieve the latest list, use the [API](/api/docs/documents/container/list-kaas-flavors).
+:::
 
 |Name | CPU   | Ram (GB) | Storage (GB) |
 | :---| :---: | :---:    |  :---:       |
@@ -106,6 +110,9 @@ List of possible sizes of KaaS nodes: **You need to use the name in the API body
 
 To create a KaaS, you must specify the Kubernetes version.
 Currently, the following versions of Kubernetes are available:
+:::info
+To retrieve the latest list, use the [API](/api/docs/documents/container/list-kubernetes-versions).
+:::
 
 | Version |
 | :---    |
@@ -118,6 +125,9 @@ Currently, the following versions of Kubernetes are available:
 ### DBaaS Engines
 
 List of possible engines for DBaaS. **You need to use the name in the body of the API**
+:::info
+To retrieve the latest list, use the [API](/api/docs/documents/database/list-dbaas-engine).
+:::
 <table>
   <thead>
     <tr>
@@ -158,6 +168,9 @@ List of possible engines for DBaaS. **You need to use the name in the body of th
 ### DBaaS Flavors
 
 List of possible sizes for DBaaS. **You need to use the name in the body of the API**
+:::info
+To retrieve the latest list, use the [API](/api/docs/documents/database/list-dbaas-flavor).
+:::
 <table>
   <thead>
     <tr>
@@ -265,7 +278,9 @@ List of possible sizes for DBaaS. **You need to use the name in the body of the 
 ## Location and Data Center
 
 To create any CMP resource, you must specify the reference Location and Data Center.
-
+:::info
+To retrieve the latest list, use the [API](/api/docs/documents/catalog/list-location-and-data-center).
+:::
 Here is the list of possible values:
  
 | Location     | DataCenter |

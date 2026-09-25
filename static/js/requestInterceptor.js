@@ -6,13 +6,10 @@
   async function loadConfig() {
     try {
       // Carica la configurazione
-      const response = await fetch('/assets/env-config.json');  // Percorso del file di configurazione
-      //console.log(response);
+      const response = await fetch('/assets/env-config.json');
+      
       if (response.ok) {
         config = await response.json();
-        //console.log('Configurazione caricata:', config);
-      } else {
-        console.log('Il file di configurazione non esiste. Utilizzo l\'URL predefinito.');
       }
     } catch (error) {
       console.error(error);
@@ -75,10 +72,6 @@
   XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
     if (requiresPath.some(segment => url.includes(segment))) {
       url = encodeQueryString(url);
-    }
-    else 
-    {
-      console.log(url);
     }
     return originalXhrOpen.apply(this, arguments);
   };

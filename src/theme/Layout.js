@@ -9,9 +9,10 @@ const CustomScript = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.dataLayer = window.dataLayer || [];
+      console.log('Initializing dataLayer for', location.pathname);
       window.dataLayer.push({
         event: 'pageview',
-        environment: 'ENVIRONMENT', // es. dev
+        environment: 'PROD', // es. dev
         platform: 'web', // es. web
         page_type: 'panel', // es. site
         lang: currentLanguage.substring(0, 2),
@@ -20,15 +21,11 @@ const CustomScript = () => {
             title: document.title,
         },
     });
-
-
-     // console.log('Custom script eseguito su', window.location.pathname);
     }
   }, [location]); // Esegui di nuovo se cambia la posizione
 
-  return null; // Non serve restituire nulla qui
+  return null; 
 };
-
 export default function CustomLayout(props) {
   return (
     <>

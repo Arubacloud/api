@@ -1,0 +1,810 @@
+openapi: 3.1.0
+info:
+  title: AI Text Management API
+  description: |
+    AI Free-Text Assistant - 10 text-processing endpoints via LLM
+
+    Use your Client ID and Client Secret to request an access token. The three parameters (grant_type, client_id, client_secret) go in the request body as x-www-form-urlencoded; the only header is Content-Type.
+
+    <pre>
+    curl -X POST https://mylogin.aruba.it/auth/realms/cmp-new-apikey-ai/protocol/openid-connect/token \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "grant_type=client_credentials" \
+    -d "client_id=<YOUR_CLIENT_ID>" \
+    -d "client_secret=<YOUR_CLIENT_SECRET>"
+    </pre>
+
+    The response contains the token in the access_token field and its lifetime in expires_in (seconds) ready to be used in the Authorize section. When it expires, request a new one.
+  version: 1.1.0
+servers:
+- url: https://apiaruba.aruba.it/textmanagement
+security:
+- bearerAuth: []
+tags:
+- name: Text Management API
+  description: AI-assisted free-text processing endpoints
+paths:
+  "/v1/text/translate":
+    post:
+      tags:
+      - Text Management API
+      summary: Translate a text to a target language
+      operationId: translate
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextTranslateRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextTranslateResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/summarize":
+    post:
+      tags:
+      - Text Management API
+      summary: Summarize a text
+      operationId: summarize
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextSummarizeRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextSummarizeResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/reply":
+    post:
+      tags:
+      - Text Management API
+      summary: Generate a reply to a received text
+      operationId: reply
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextReplyRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextReplyResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/refine":
+    post:
+      tags:
+      - Text Management API
+      summary: Refine an existing text draft
+      operationId: refine
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextRefineRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextRefineResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/language/detect":
+    post:
+      tags:
+      - Text Management API
+      summary: Detect the language of a text
+      operationId: detectLanguage
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextLanguageDetectRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextLanguageDetectResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/generate":
+    post:
+      tags:
+      - Text Management API
+      summary: Generate a text body from a prompt
+      operationId: generate
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextGenerateRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextGenerateResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/friendlify":
+    post:
+      tags:
+      - Text Management API
+      summary: Rewrite a text in a friendly tone
+      operationId: friendlify
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextFriendlifyRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextFriendlifyResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/formalize":
+    post:
+      tags:
+      - Text Management API
+      summary: Rewrite a text in a formal tone
+      operationId: formalize
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextFormalizeRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextFormalizeResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/expand":
+    post:
+      tags:
+      - Text Management API
+      summary: Expand a text with more details
+      operationId: expand
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextExpandRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextExpandResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+  "/v1/text/compact":
+    post:
+      tags:
+      - Text Management API
+      summary: Shorten/compact a text
+      operationId: compact
+      parameters:
+      - name: Conversation-Id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TextCompactRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TextCompactResponse"
+        '400':
+          description: Invalid or empty input content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '499':
+          description: 'Policy violation: the LLM has detected unauthorized content'
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '502':
+          description: Backend LLM unreachable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+        '504':
+          description: Timeout in the backend LLM response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    TextTranslateRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+        language:
+          type: string
+          minLength: 1
+      required:
+      - content
+      - language
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+    AiPlatformUsage:
+      type: object
+      properties:
+        service:
+          type: string
+        namespace:
+          type: string
+        prompt_tokens:
+          type: integer
+          format: int64
+        completion_tokens:
+          type: integer
+          format: int64
+        total_tokens:
+          type: integer
+          format: int64
+    TextTranslateResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextSummarizeRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+        language:
+          type: string
+      required:
+      - content
+    TextSummarizeResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextReplyRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+        content:
+          type: string
+          minLength: 1
+      required:
+      - content
+      - prompt
+    TextReplyResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextRefineRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+        content:
+          type: string
+          minLength: 1
+      required:
+      - content
+      - prompt
+    TextRefineResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextLanguageDetectRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+      required:
+      - content
+    TextLanguageDetectResponse:
+      type: object
+      properties:
+        language:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextGenerateRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+      required:
+      - prompt
+    TextGenerateResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextFriendlifyRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+      required:
+      - content
+    TextFriendlifyResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextFormalizeRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+      required:
+      - content
+    TextFormalizeResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextExpandRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+      required:
+      - content
+    TextExpandResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+    TextCompactRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+      required:
+      - content
+    TextCompactResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        ai_platform_usage:
+          "$ref": "#/components/schemas/AiPlatformUsage"
+        ai_generated:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: 'JWT issued by the identity provider. Format: ''Bearer <token>'''
+      name: bearerAuth
+      scheme: bearer
+      bearerFormat: JWT

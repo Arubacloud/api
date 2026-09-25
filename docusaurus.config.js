@@ -15,10 +15,10 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: process.env.URL || 'https://arubacloud.github.io',
+  url: process.env.URL || 'https://your-docusaurus-site.example.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: process.env.BASE_URL || '/api/',
+  baseUrl:  process.env.BASE_URL || "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -36,12 +36,10 @@ const config = {
     locales: ['en','it'],
     localeConfigs: {
       en: {
-        label: 'English',
-        htmlLang: 'en-US',
+        htmlLang: 'en-GB',
       },
       // You can omit a locale (e.g. fr) if you don't need to override the defaults
       it: {
-        label: 'Italiano',
         htmlLang:'it-IT',
       },
     },
@@ -53,7 +51,7 @@ const config = {
     //   async: false,
     // },
     {
-      src: '/api/js/gtmscript.js',
+      src: '/js/gtmscript.js',
       async: false,
     },
 
@@ -117,14 +115,15 @@ const config = {
             label: "API",
           },
           {
+            type: "docSidebar",
+            sidebarId: 'documentsSidebarAI',
+            position: "left",
+            label: "AI Platform API",
+          },
+          {
             href: "https://arubacloud.com/",
             //href: ({ locale }) => locale === 'it' ?  'https://cloud.it/' : 'https://cloud.com/',
             label: "Aruba Home",
-            position: "right",
-          },
-          {
-            href: "https://github.com/Arubacloud/api",
-            label: "GitHub",
             position: "right",
           }
         ],
@@ -132,41 +131,6 @@ const config = {
       footer: {
         style: 'dark',
         links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Getting Started',
-                to: '/docs/intro',
-              },
-              {
-                label: 'API Reference',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/Arubacloud/api',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Changelog',
-                to: '/docs/changelog',
-              },
-              {
-                label: 'Report an Issue',
-                href: 'https://github.com/Arubacloud/api/issues/new/choose',
-              },
-            ],
-          },
         ],
         copyright: `<div style="text-align: start;">
         <small>Copyright © ${new Date().getFullYear()} Aruba S.p.A. - via San Clemente, 53 - 24036 Ponte San Pietro (BG) <br>
@@ -336,7 +300,7 @@ const config = {
                 groupPathsBy: "tag",
                 categoryLinkSource: "tag"
               }
-            },
+            }, 
             catalog:{
               specPath: "static/openapi/catalog.json",
               outputDir: "docs/documents/catalog",
@@ -346,7 +310,48 @@ const config = {
                 groupPathsBy: "tag",
                 categoryLinkSource: "tag"
               }
-            }    
+            } ,
+            cloud:{
+              specPath: "static/openapi/cloudv1-provider.json",
+              outputDir: "docs/documents/cloud",
+              label: "Cloud",
+              //proxy: process.env.PROXY_URL,
+              sidebarOptions: {
+                groupPathsBy: "tag",
+                categoryLinkSource: "tag"
+              }
+            },
+            aicatalog:{
+              specPath: "static/openapi/ai-catalog.yml",
+              outputDir: "docs/documents/aimodels", 
+              label: "AI Models",
+              //proxy: process.env.PROXY_URL,
+              sidebarOptions: {
+                groupPathsBy: "tag",
+                categoryLinkSource: "tag"
+              }
+            },
+            aitextmanagement:{
+              specPath: "static/openapi/ai-text-management.yml",
+              outputDir: "docs/documents/aitextmanagement", 
+              label: "AI Text Management",
+              //proxy: process.env.PROXY_URL,
+              sidebarOptions: {
+                groupPathsBy: "tag",
+                categoryLinkSource: "tag"
+              }
+            },
+            aikeys:{
+              specPath: "static/openapi/profile.json",
+              outputDir: "docs/documents/aikeys",
+              label: "AI Keys",
+              //proxy: process.env.PROXY_URL,
+              sidebarOptions: {
+                groupPathsBy: "tag",
+                categoryLinkSource: "tag"
+              }
+            }, 
+           
 
           },
         },
@@ -354,91 +359,8 @@ const config = {
       ],
       [
         require.resolve('./plugins/custom-encoding'),{}
-      ],
-      function webpackFallbackPlugin() {
-        return {
-          name: 'webpack-fallback-plugin',
-          configureWebpack() {
-            return {
-              resolve: {
-                fallback: {
-                  path: false,
-                },
-              },
-            };
-          },
-        };
-      },
-      // [
-      //   require.resolve("@cmfcmf/docusaurus-search-local"),
-      //   {
-      //     // whether to index docs pages
-      //     indexDocs: true,
-        
-      //     // Whether to also index the titles of the parent categories in the sidebar of a doc page.
-      //     // 0 disables this feature.
-      //     // 1 indexes the direct parent category in the sidebar of a doc page
-      //     // 2 indexes up to two nested parent categories of a doc page
-      //     // 3...
-      //     //
-      //     // Do _not_ use Infinity, the value must be a JSON-serializable integer.
-      //     indexDocSidebarParentCategories: 0,
-        
-      //     // whether to index blog pages
-      //     indexBlog: true,
-        
-      //     // whether to index static pages
-      //     // /404.html is never indexed
-      //     indexPages: false,
-        
-      //     // language of your documentation, see next section
-      //     language: "en",
-        
-      //     // setting this to "none" will prevent the default CSS to be included. The default CSS
-      //     // comes from autocomplete-theme-classic, which you can read more about here:
-      //     // https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-theme-classic/
-      //     // When you want to overwrite CSS variables defined by the default theme, make sure to suffix your
-      //     // overwrites with `!important`, because they might otherwise not be applied as expected. See the
-      //     // following comment for more information: https://github.com/cmfcmf/docusaurus-search-local/issues/107#issuecomment-1119831938.
-      //     style: undefined,
-        
-      //     // The maximum number of search results shown to the user. This does _not_ affect performance of
-      //     // searches, but simply does not display additional search results that have been found.
-      //     maxSearchResults: 8,
-        
-      //     // lunr.js-specific settings
-      //     lunr: {
-      //       // When indexing your documents, their content is split into "tokens".
-      //       // Text entered into the search box is also tokenized.
-      //       // This setting configures the separator used to determine where to split the text into tokens.
-      //       // By default, it splits the text at whitespace and dashes.
-      //       //
-      //       // Note: Does not work for "ja" and "th" languages, since these use a different tokenizer.
-      //       tokenizerSeparator: /[\s\-]+/,
-      //       // https://lunrjs.com/guides/customising.html#similarity-tuning
-      //       //
-      //       // This parameter controls the importance given to the length of a document and its fields. This
-      //       // value must be between 0 and 1, and by default it has a value of 0.75. Reducing this value
-      //       // reduces the effect of different length documents on a term’s importance to that document.
-      //       b: 0.75,
-      //       // This controls how quickly the boost given by a common word reaches saturation. Increasing it
-      //       // will slow down the rate of saturation and lower values result in quicker saturation. The
-      //       // default value is 1.2. If the collection of documents being indexed have high occurrences
-      //       // of words that are not covered by a stop word filter, these words can quickly dominate any
-      //       // similarity calculation. In these cases, this value can be reduced to get more balanced results.
-      //       k1: 1.2,
-      //       // By default, we rank pages where the search term appears in the title higher than pages where
-      //       // the search term appears in just the text. This is done by "boosting" title matches with a
-      //       // higher value than content matches. The concrete boosting behavior can be controlled by changing
-      //       // the following settings.
-      //       titleBoost: 5,
-      //       contentBoost: 1,
-      //       tagsBoost: 3,
-      //       parentCategoriesBoost: 2, // Only used when indexDocSidebarParentCategories > 0
-      //     }
-      //   },
-      // ],
-    ]
+      ]
+     ]
 };
 
 export default config;

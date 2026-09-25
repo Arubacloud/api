@@ -25,6 +25,7 @@ const CustomScript = () => {
   }, [location]); // Esegui di nuovo se cambia la posizione
 
   return null; 
+};
 export default function CustomLayout(props) {
   return (
     <>

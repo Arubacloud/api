@@ -345,7 +345,7 @@
                     "flavorName": {
                         "type": "string",
                         "nullable": true,
-                        "description": "For more information, check the <a href=\"/docs/metadata/#cloudserver-flavors\" target=\"_blank\">documentation</a>."
+                        "description": "For more information, check the <a href=\"/api/docs/metadata/#cloudserver-flavors\" target=\"_blank\">documentation</a>."
                     },
                     "elasticIp": {
                         "$ref": "#/components/schemas/GenericResourceDto"

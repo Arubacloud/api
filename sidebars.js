@@ -231,19 +231,7 @@ const sidebars = {
       },
       items: require("./docs/documents/catalog/sidebar.ts"),
     },
-        {
-      type: "category",
-      label: "Cloud",
-      link: {
-        type: "generated-index",
-        title: "Cloud API",
-        description:
-          "This is a description of api for interact with Cloud API.",
-        slug: "docs/documents/cloud/aruba-cloud-api",
-      },
-      items: require("./docs/documents/cloud/sidebar.ts"),
-    },
-            {
+    {
       type: "category",
       label: "AiKey",
       link: {
@@ -255,9 +243,6 @@ const sidebars = {
       },
       items: require("./docs/documents/aikeys/sidebar.ts"),
     }
-
-
-
   ],
   documentsSidebarAI: [
         {

@@ -311,16 +311,6 @@ const config = {
                 categoryLinkSource: "tag"
               }
             } ,
-            cloud:{
-              specPath: "static/openapi/cloudv1-provider.json",
-              outputDir: "docs/documents/cloud",
-              label: "Cloud",
-              //proxy: process.env.PROXY_URL,
-              sidebarOptions: {
-                groupPathsBy: "tag",
-                categoryLinkSource: "tag"
-              }
-            },
             aicatalog:{
               specPath: "static/openapi/ai-catalog.yml",
               outputDir: "docs/documents/aimodels", 

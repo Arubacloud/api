@@ -5,30 +5,39 @@ import { useLocation } from '@docusaurus/router';
 
 const CustomScript = () => {
   const location = useLocation();
-  const currentLanguage = document.documentElement.lang;
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'pageview',
-        environment: 'ENVIRONMENT', // es. dev
-        platform: 'web', // es. web
-        page_type: 'panel', // es. site
-        lang: currentLanguage.substring(0, 2),
-        page: {
-            url: location.pathname,
-            title: document.title,
-        },
-    });
-
-
-     // console.log('Custom script eseguito su', window.location.pathname);
+    if (typeof window === 'undefined') {
+      return;
     }
+    if (window.__initialPageviewPath === location.pathname) {
+      window.__initialPageviewPath = null;
+      return;
+    }
+    window.dataLayer = window.dataLayer || [];
+    if (typeof window.pushPageview === 'function') {
+      window.pushPageview(location.pathname);
+      window.__initialPageviewPath = null;
+      return;
+    }
+    window.dataLayer.push({
+      event: 'pageview',
+      environment: 'prod', // es. dev
+      platform: 'web', // es. web
+      page_type: 'site',
+      order_type: '',
+      user: {},
+      lang: (document.documentElement.lang || 'en').substring(0, 2),
+      page: {
+        url: location.pathname,
+        title: document.title,
+        referrer: document.referrer,
+        cart_id: '',
+      },
+    });
   }, [location]); // Esegui di nuovo se cambia la posizione
 
-  return null; // Non serve restituire nulla qui
+  return null;
 };
-
 export default function CustomLayout(props) {
   return (
     <>

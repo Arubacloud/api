@@ -1,0 +1,3188 @@
+openapi: 3.1.0
+info:
+  title: AI Models Catalog API
+  description: |
+    Use your Client ID and Client Secret to request an access token. The three parameters (grant_type, client_id, client_secret) go in the request body as x-www-form-urlencoded; the only header is Content-Type.
+
+    ```bash
+    curl -X POST https://mylogin.aruba.it/auth/realms/cmp-new-apikey-ai/protocol/openid-connect/token \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "grant_type=client_credentials" \
+    -d "client_id=<YOUR_CLIENT_ID>" \
+    -d "client_secret=<YOUR_CLIENT_SECRET>"
+    ```
+
+    The response contains the token in the access_token field and its lifetime in expires_in (seconds) ready to be used in the Authorize section. When it expires, request a new one.
+  
+  version: 1.1.0
+servers:
+- url: https://apiaruba.aruba.it/aiplatform
+paths:
+  /v1/models:
+    get:
+      tags:
+        - Model Management
+      summary: Models
+      description: >-
+        Provides basic information about each one such as the owner and
+        availability.
+
+
+        Follows the exact same API spec as `OpenAI's Chat API
+        https://developers.openai.com/api/reference/resources/models/methods/list`
+      operationId: model_list_v1_models_get
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+        '400':
+          description: Bad request Error when passing an invalid or non-existing model name or an invalid enum or an invalid type in a field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+  /v1/chat/completions:
+    post:
+      tags:
+        - Completions
+      summary: Chat Completions
+      description: >-
+        Follows the exact same API spec as `OpenAI's Chat API
+        https://platform.openai.com/docs/api-reference/chat`
+      operationId: chat_completion_v1_chat_completions_post
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            examples:
+              Simple:
+                $ref: '#/components/examples/ChatCompletions/Simple'
+              Stream call (with usage):
+                $ref: '#/components/examples/ChatCompletions/StreamCall'
+              With logbprobs:
+                $ref: '#/components/examples/ChatCompletions/WithLogprobs'
+              All parameters:
+                $ref: '#/components/examples/ChatCompletions/AllParams'
+              All parameters (with tool call):
+                $ref: '#/components/schemas/ChatCompletionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionStreamResponse'
+              examples:
+                Stream:
+                  $ref: '#/components/examples/ChatCompletions/Stream'
+        '400':
+          description: Bad request Error when passing an invalid or non-existing model name or an invalid enum or an invalid type in a field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+  /v1/completions:
+    post:
+      tags:
+        - Completions
+      summary: Completions
+      description: >-
+        Follows the exact same API spec as `OpenAI's Completions API
+        https://platform.openai.com/docs/api-reference/completions`
+      operationId: completion_v1_completions_post
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionRequest'
+            examples:
+              Simple:
+                $ref: '#/components/examples/Completions/Simple'
+              Stream call (with usage):
+                $ref: '#/components/examples/Completions/StreamCall'
+              All parameters:
+                $ref: '#/components/schemas/CompletionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionResponse'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/CompletionStreamResponse'
+              examples:
+                Stream:
+                  $ref: '#/components/examples/Completions/Stream'
+        '400':
+          description: Bad request Error when passing an invalid or non-existing model name or an invalid enum or an invalid type in a field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+  /v1/embeddings:
+    post:
+      tags:
+        - Embeddings
+      summary: Embeddings
+      description: >-
+        Follows the exact same API spec as `OpenAI's Embeddings API
+        https://platform.openai.com/docs/api-reference/embeddings`
+      operationId: embeddings_v1_embeddings_post
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddingRequest'
+            examples:
+              Simple:
+                $ref: '#/components/examples/Embeddings/Simple'
+              Multiple inputs:
+                $ref: '#/components/examples/Embeddings/MultipleInputs'
+              Base64 encoding:
+                $ref: '#/components/schemas/EmbeddingRequest'
+              Float encoding:
+                $ref: '#/components/examples/Embeddings/FloatEncoding'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddingResponse'
+              examples:
+                Float encoding (default):
+                  $ref: '#/components/schemas/EmbeddingResponse'
+                Base64 encoding (default):
+                  $ref: '#/components/examples/Responses/EmbeddingBase64Response'
+        '400':
+          description: Bad request Error when passing an invalid or non-existing model name or an invalid enum or an invalid type in a field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+  /v1/responses:
+    post:
+      tags:
+        - Responses
+      summary: Responses
+      description: >-
+        Follows the OpenAI Responses API spec:
+        `https://platform.openai.com/docs/api-reference/responses`
+      operationId: responses_api_v1_responses_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponsesRequest'
+            examples:
+              Simple:
+                $ref: '#/components/examples/Responses/Simple'
+              Stream call (with usage):
+                $ref: '#/components/examples/Responses/StreamCall'
+              All parameters:
+                $ref: '#/components/examples/Responses/WithInstructionsAndReasoning'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsesResponse'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ResponsesStreamResponse'
+              examples:
+                Stream:
+                  $ref: '#/components/examples/Responses/Stream'
+        '400':
+          description: Bad request Error when passing an invalid or non-existing model name or an invalid enum or an invalid type in a field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+      security:
+        - bearerAuth: []
+  /v1/images/generations:
+    post:
+      tags:
+        - Images Generations
+      summary: Images Generations
+      description: >-
+        Follows the OpenAI Responses API spec:
+        `https://developers.openai.com/api/reference/resources/images/methods/generate`
+      operationId: images_api_v1_images_generations_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImagesGenerationsRequest'
+            examples:
+              Simple:
+                $ref: '#/components/examples/ImagesGenerations/Simple'
+              All parameters:
+                $ref: '#/components/examples/ImagesGenerations/AllParams'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImagesGenerationsResponse'
+        '400':
+          description: Bad request Error when passing an invalid or non-existing model name or an invalid enum or an invalid type in a field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+      security:
+        - bearerAuth: []
+  /v1/images/edits:
+    post:
+      tags:
+        - Images Edits
+      summary: Image Edits
+      description: >-
+        Follows the OpenAI Responses API spec:
+        `https://developers.openai.com/api/reference/resources/images/methods/edit`
+      operationId: images_api_v1_images_edits_post
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImagesEditsRequest'
+            examples:
+              Simple:
+                $ref: '#/components/examples/ImagesEdits/Simple'
+              All parameters:
+                $ref: '#/components/examples/ImagesEdits/AllParams'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImagesEditsResponse'
+        '400':
+          description: Bad request Error when passing an invalid or non-existing model name or an invalid enum or an invalid type in a field
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+      security:
+        - bearerAuth: []
+
+components:
+  schemas:
+    ChatCompletionUserMessage:
+      type: object
+      title: User message
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum:
+            - user
+          description: The role of the message author
+          examples:
+            - user
+        content:
+          description: The contents of the message
+          anyOf:
+            - type: string
+              description: The text contents of the message
+              examples:
+                - What is the capital of France?
+            - type: array
+              description: An array of content parts
+              items:
+                oneOf:
+                  - type: object
+                    title: Text content
+                    required:
+                      - type
+                      - text
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - text
+                        examples:
+                          - text
+                      text:
+                        type: string
+                        examples:
+                          - What is shown in this image?
+                  - type: object
+                    title: Image content
+                    required:
+                      - type
+                      - image_url
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - image_url
+                        examples:
+                          - image_url
+                      image_url:
+                        type: object
+                        required:
+                          - url
+                        properties:
+                          url:
+                            type: string
+                            description: >-
+                              Either a URL of the image or the base64 encoded
+                              image data
+                            examples:
+                              - https://example.com/images/photo.jpg
+                          detail:
+                            type: string
+                            enum:
+                              - auto
+                              - low
+                              - high
+                            default: auto
+                            examples:
+                              - auto
+        name:
+          type: string
+          description: An optional name for the participant
+          examples:
+            - john_doe
+    ChatCompletionAssistantMessage:
+      type: object
+      title: Assistant message
+      required:
+        - role
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+          description: The role of the message author
+          examples:
+            - assistant
+        content:
+          type: string
+          nullable: true
+          description: The contents of the message
+          examples:
+            - The capital of France is Paris.
+        name:
+          type: string
+          description: An optional name for the participant
+          examples:
+            - assistant_1
+        tool_calls:
+          type: array
+          description: The tool calls generated by the model
+          items:
+            type: object
+            required:
+              - id
+              - type
+              - function
+            properties:
+              id:
+                type: string
+                description: The ID of the tool call
+                examples:
+                  - call_abc123
+              type:
+                type: string
+                enum:
+                  - function
+                description: The type of the tool
+                examples:
+                  - function
+              function:
+                type: object
+                required:
+                  - name
+                  - arguments
+                properties:
+                  name:
+                    type: string
+                    description: The name of the function to call
+                    examples:
+                      - get_current_weather
+                  arguments:
+                    type: string
+                    description: >-
+                      The arguments to call the function with, as generated by
+                      the model in JSON format
+                    examples:
+                      - '{"location": "Milan, IT", "unit": "celsius"}'
+        function_call:
+          type: object
+          deprecated: true
+          description: Deprecated and replaced by tool_calls
+          required:
+            - name
+            - arguments
+          properties:
+            name:
+              type: string
+              description: The name of the function to call
+              examples:
+                - get_current_weather
+            arguments:
+              type: string
+              description: The arguments to call the function with
+              examples:
+                - '{"location": "Milan, IT"}'
+    ChatCompletionSystemMessage:
+      type: object
+      title: System message
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum:
+            - system
+          description: The role of the message author
+          examples:
+            - system
+        content:
+          type: string
+          description: The contents of the system message
+          examples:
+            - You are a helpful assistant that answers concisely.
+        name:
+          type: string
+          description: An optional name for the participant
+          examples:
+            - system_policy
+    ChatCompletionToolMessage:
+      type: object
+      title: Tool message
+      required:
+        - role
+        - content
+        - tool_call_id
+      properties:
+        role:
+          type: string
+          enum:
+            - tool
+          description: The role of the message author
+          examples:
+            - tool
+        content:
+          type: string
+          description: The contents of the tool message
+          examples:
+            - '{"temperature": 18, "unit": "celsius"}'
+        tool_call_id:
+          type: string
+          description: The ID of the tool call that this message is responding to.
+          examples:
+            - call_abc123
+    ChatCompletionFunctionMessage:
+      type: object
+      title: Function message
+      deprecated: true
+      required:
+        - role
+        - content
+        - name
+      properties:
+        role:
+          type: string
+          enum:
+            - function
+          description: The role of the message author
+          examples:
+            - function
+        content:
+          type: string
+          nullable: true
+          description: The contents of the function message
+          examples:
+            - '{"temperature": 18, "unit": "celsius"}'
+        name:
+          type: string
+          description: The name of the function to call
+          examples:
+            - get_current_weather
+    ChatCompletionDeveloperMessage:
+      type: object
+      title: Developer message
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum:
+            - developer
+          description: The role of the message author
+          examples:
+            - developer
+        content:
+          type: string
+          description: The contents of the developer message
+          examples:
+            - Always respond in valid JSON.
+        name:
+          type: string
+          description: An optional name for the participant
+          examples:
+            - dev_notes
+    ChatCompletionRequest:
+      type: object
+      required:
+        - model
+        - messages
+      properties:
+        model:
+          type: string
+          description: ID of the model to use
+          examples:
+            - gpt-oss-20b
+        messages:
+          type: array
+          description: A list of messages comprising the conversation so far
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ChatCompletionUserMessage'
+              - $ref: '#/components/schemas/ChatCompletionAssistantMessage'
+              - $ref: '#/components/schemas/ChatCompletionSystemMessage'
+              - $ref: '#/components/schemas/ChatCompletionToolMessage'
+              - $ref: '#/components/schemas/ChatCompletionFunctionMessage'
+              - $ref: '#/components/schemas/ChatCompletionDeveloperMessage'
+          examples:
+            -   - role: system
+                  content: You are a helpful assistant.
+                - role: user
+                  content: What is the weather like in the capital of France?
+                - role: assistant
+                  content:
+                  tool_calls:
+                    - id: call_abc123,
+                      type: function,
+                      function:
+                        name: get_current_weather,
+                        arguments:
+                          location: Paris, France
+                - role: tool
+                  tool_call_id: call_abc123
+                  content:
+                    temp: 18
+                    condition: cloudy
+        frequency_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          default: 0
+          description: >-
+            Number between -2.0 and 2.0. Positive values penalize new tokens
+            based on their existing frequency in the text so far
+          examples:
+            - 0
+        logit_bias:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: integer
+          description: >-
+            Modify the likelihood of specified tokens appearing in the
+            completion
+          examples:
+            - "1": 0
+              "2": 0
+              "3": 0
+        logprobs:
+          type: boolean
+          nullable: true
+          default: false
+          description: Whether to return log probabilities of the output tokens (must be paired with top_logprobs set and viceversa)
+          examples:
+            - true
+        top_logprobs:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 20
+          description: >-
+            An integer between 0 and 20 specifying the number of most likely
+            tokens to return at each token position (must be paired with logprobs set to true and viceversa)
+          examples:
+            - 5
+        max_tokens:
+          type: integer
+          nullable: true
+          default: 16
+          description: >-
+            The maximum number of tokens that can be generated in the chat
+            completion
+          examples:
+            - 1024
+        'n':
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 128
+          default: 1
+          description: How many chat completion choices to generate for each input message
+          examples:
+            - 1
+        presence_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          default: 0
+          description: >-
+            Number between -2.0 and 2.0. Positive values penalize new tokens
+            based on whether they appear in the text so far
+          examples:
+            - 0
+        response_format:
+          type: object
+          nullable: true
+          properties:
+            type:
+              type: string
+              enum:
+                - text
+                - json_object
+                - json_schema
+              description: The type of response format
+              examples:
+                - text
+            json_schema:
+              type: object
+              description: The JSON schema for the response format
+              properties:
+                name:
+                  type: string
+                  examples:
+                    - weather_response
+                description:
+                  type: string
+                  examples:
+                    - Schema describing the weather response payload
+                schema:
+                  type: object
+                  examples:
+                    - type: object
+                      properties:
+                        temperature:
+                          type: number
+                        unit:
+                          type: string
+                      required:
+                        - temperature
+                        - unit
+                strict:
+                  type: boolean
+                  default: false
+                  examples:
+                    - true
+          description: An object specifying the format that the model must output
+          examples:
+            - type: text
+        seed:
+          type: integer
+          nullable: true
+          description: >-
+            If specified, our system will make a best effort to sample
+            deterministically
+          examples:
+            - 42
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+              minItems: 1
+              maxItems: 4
+            - type: 'null'
+          examples:
+            - forbidden word
+          description: Up to 4 sequences where the API will stop generating further tokens
+        stream:
+          type: boolean
+          nullable: true
+          default: false
+          description: If set, partial message deltas will be sent
+          examples:
+            - false
+        stream_options:
+          type: object
+          nullable: true
+          properties:
+            include_usage:
+              type: boolean
+              description: >-
+                If set, an additional chunk will be streamed with usage
+                statistics
+              examples:
+                - true
+          description: Options for streaming response
+          examples:
+            - include_usage: true
+        temperature:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 2
+          default: 1
+          description: What sampling temperature to use, between 0 and 2
+          examples:
+            - 0.7
+        top_p:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 1
+          default: 1
+          description: An alternative to sampling with temperature, called nucleus sampling
+          examples:
+            - 1
+        tools:
+          type: array
+          nullable: true
+          items:
+            type: object
+            required:
+              - type
+              - function
+            properties:
+              type:
+                type: string
+                enum:
+                  - function
+                description: The type of the tool
+                examples:
+                  - function
+              function:
+                type: object
+                required:
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: The name of the function to be called
+                    examples:
+                      - get_current_weather
+                  description:
+                    type: string
+                    description: A description of what the function does
+                    examples:
+                      - Get the current weather for a given location
+                  parameters:
+                    type: object
+                    description: >-
+                      The parameters the functions accepts, described as a JSON
+                      Schema object
+                    examples:
+                      - type: object
+                        properties:
+                          location:
+                            type: string
+                            description: City and country, e.g. Milan, IT
+                          unit:
+                            type: string
+                            enum:
+                              - celsius
+                              - fahrenheit
+                        required:
+                          - location
+                  strict:
+                    type: boolean
+                    default: false
+                    description: Whether to enable strict schema adherence
+                    examples:
+                      - true
+          description: A list of tools the model may call
+          examples:
+            -   - type: function
+                  function:
+                    name: get_current_weather
+                    description: Get the current weather for a given location
+                    parameters:
+                      type: object
+                      properties:
+                        location:
+                          type: string
+                      required:
+                        - location
+        tool_choice:
+          oneOf:
+            - type: string
+              enum:
+                - none
+                - auto
+                - required
+              description: Controls which (if any) tool is called by the model
+            - type: object
+              required:
+                - type
+                - function
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - function
+                  examples:
+                    - function
+                function:
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the function to call
+                      examples:
+                        - get_current_weather
+              description: Specifies a tool the model should use
+            - type: 'null'
+          description: Controls which (if any) tool is called by the model
+          examples:
+            - auto
+        parallel_tool_calls:
+          type: boolean
+          nullable: true
+          default: true
+          description: Whether to enable parallel function calling during tool use
+          examples:
+            - true
+        user:
+          type: string
+          nullable: true
+          description: A unique identifier representing your end-user
+          examples:
+            - user-1234
+    ChatCompletionResponse:
+      type: object
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+        - usage
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the chat completion
+          examples:
+            - chatcmpl-8f9a3b1c2d
+        object:
+          type: string
+          enum:
+            - chat.completion
+          description: The object type, which is always chat.completion
+          examples:
+            - chat.completion
+        created:
+          type: integer
+          description: >-
+            The Unix timestamp (in seconds) of when the chat completion was
+            created
+          examples:
+            - 1717000000
+        model:
+          type: string
+          description: The model used for the chat completion
+          examples:
+            - gpt-oss-20b
+        choices:
+          type: array
+          description: A list of chat completion choices
+          items:
+            type: object
+            required:
+              - index
+              - message
+              - finish_reason
+            properties:
+              index:
+                type: integer
+                description: The index of the choice in the list of choices
+                examples:
+                  - 0
+              message:
+                $ref: '#/components/schemas/ChatCompletionAssistantMessage'
+              logprobs:
+                type: object
+                nullable: true
+                description: Log probability information for the choice
+                examples:
+                  - false
+              finish_reason:
+                type: string
+                enum:
+                  - stop
+                  - length
+                  - tool_calls
+                  - content_filter
+                  - function_call
+                description: The reason the model stopped generating tokens
+                examples:
+                  - stop
+          examples:
+            - index: 0
+              message:
+                role: assistant
+                content: The capital of France is Paris.
+              logprobs:
+              finish_reason: stop
+        usage:
+          type: object
+          required:
+            - prompt_tokens
+            - completion_tokens
+            - total_tokens
+          properties:
+            prompt_tokens:
+              type: integer
+              description: Number of tokens in the prompt
+              examples:
+                - 15
+            completion_tokens:
+              type: integer
+              description: Number of tokens in the generated completion
+              examples:
+                - 8
+            total_tokens:
+              type: integer
+              description: Total number of tokens used in the request
+              examples:
+                - 23
+        system_fingerprint:
+          type: string
+          description: This fingerprint represents the backend configuration
+          examples:
+            - fp_44709d6fcb
+    ChatCompletionStreamResponse:
+      type: object
+      description: >-
+        Rappresenta un singolo chunk inviato durante lo streaming. Il campo
+        message di ChatCompletionResponse è sostituito da delta, che contiene
+        solo il frammento incrementale di contenuto generato in quel chunk.
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the chat completion
+          examples:
+            - chatcmpl-8f9a3b1c2d
+        object:
+          type: string
+          enum:
+            - chat.completion.chunk
+          description: The object type, which is always chat.completion.chunk
+          examples:
+            - chat.completion.chunk
+        created:
+          type: integer
+          description: >-
+            The Unix timestamp (in seconds) of when the chat completion was
+            created
+          examples:
+            - 1717000000
+        model:
+          type: string
+          description: The model used for the chat completion
+          examples:
+            - gpt-oss-20b
+        choices:
+          type: array
+          description: >-
+            A list of chat completion choice deltas. Empty array in the final
+            usage-only chunk when stream_options.include_usage is true.
+          items:
+            type: object
+            required:
+              - index
+              - delta
+            properties:
+              index:
+                type: integer
+                description: The index of the choice in the list of choices
+                examples:
+                  - 0
+              delta:
+                $ref: '#/components/schemas/ChatCompletionStreamDelta'
+              logprobs:
+                type: object
+                nullable: true
+                description: Log probability information for the choice
+                examples:
+                  - false
+              finish_reason:
+                type: string
+                nullable: true
+                enum:
+                  - stop
+                  - length
+                  - tool_calls
+                  - content_filter
+                  - function_call
+                description: >-
+                  The reason the model stopped generating tokens. Null in
+                  every chunk except the last one for this choice.
+                examples:
+                  - null
+          examples:
+            - index: 0
+              delta:
+                role: assistant
+                content: Paris
+              logprobs:
+              finish_reason:
+        usage:
+          type: object
+          nullable: true
+          description: >-
+            Present only in the final chunk, and only if
+            stream_options.include_usage was true in the request. In that
+            chunk, choices is an empty array.
+          required:
+            - prompt_tokens
+            - completion_tokens
+            - total_tokens
+          properties:
+            prompt_tokens:
+              type: integer
+              description: Number of tokens in the prompt
+              examples:
+                - 15
+            completion_tokens:
+              type: integer
+              description: Number of tokens in the generated completion
+              examples:
+                - 8
+            total_tokens:
+              type: integer
+              description: Total number of tokens used in the request
+              examples:
+                - 23
+        system_fingerprint:
+          type: string
+          description: This fingerprint represents the backend configuration
+          examples:
+            - fp_44709d6fcb
+    ChatCompletionStreamDelta:
+      type: object
+      description: >-
+        Contenuto incrementale del messaggio in questo chunk. Il client deve
+        concatenare il campo content di ogni chunk per ricostruire il
+        messaggio completo.
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+          description: Present only in the first chunk of the stream
+          examples:
+            - assistant
+        content:
+          type: string
+          nullable: true
+          description: Incremental content fragment for this chunk
+          examples:
+            - Paris
+        tool_calls:
+          type: array
+          description: >-
+            Present when the model is calling one or more tools. Each field
+            other than index arrives fragmented across multiple chunks and
+            must be concatenated client-side.
+          items:
+            type: object
+            required:
+              - index
+            properties:
+              index:
+                type: integer
+                examples:
+                  - 0
+              id:
+                type: string
+                examples:
+                  - call_abc123
+              type:
+                type: string
+                enum:
+                  - function
+                examples:
+                  - function
+              function:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    examples:
+                      - get_current_weather
+                  arguments:
+                    type: string
+                    description: JSON string fragment, to be concatenated
+                    examples:
+                      - '{"location":'
+    CompletionStreamResponse:
+      type: object
+      description: >-
+        Rappresenta un singolo chunk inviato durante lo streaming di
+        /v1/completions. Il campo choices contiene, per ciascun chunk, il
+        frammento incrementale di testo generato.
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the completion
+          examples:
+            - cmpl-8f9a3b1c2d
+        object:
+          type: string
+          enum:
+            - text_completion
+          description: The object type
+          examples:
+            - text_completion
+        created:
+          type: integer
+          description: The Unix timestamp of when the completion was created
+          examples:
+            - 1717000000
+        model:
+          type: string
+          description: The model used for completion
+          examples:
+            - gpt-oss-20b
+        choices:
+          type: array
+          description: >-
+            A list of completion choice deltas. Empty array in the final
+            usage-only chunk when stream_options.include_usage is true.
+          items:
+            type: object
+            required:
+              - index
+              - text
+            properties:
+              text:
+                type: string
+                description: Incremental text fragment for this chunk
+                examples:
+                  - Once
+              index:
+                type: integer
+                examples:
+                  - 0
+              finish_reason:
+                type: string
+                nullable: true
+                enum:
+                  - stop
+                  - length
+                description: >-
+                  The reason the model stopped generating tokens. Null in
+                  every chunk except the last one for this choice.
+                examples:
+                  - null
+          examples:
+            - text: Once
+              index: 0
+              finish_reason:
+        usage:
+          type: object
+          nullable: true
+          description: >-
+            Present only in the final chunk, and only if
+            stream_options.include_usage was true in the request. In that
+            chunk, choices is an empty array.
+          properties:
+            prompt_tokens:
+              type: integer
+              examples:
+                - 5
+            completion_tokens:
+              type: integer
+              examples:
+                - 12
+            total_tokens:
+              type: integer
+              examples:
+                - 17
+    CompletionRequest:
+      type: object
+      required:
+        - model
+        - prompt
+      properties:
+        model:
+          type: string
+          description: ID of the model to use
+          examples:
+            - gpt-oss-20b
+        prompt:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+          description: The prompt(s) to generate completions for
+          examples:
+            - 'Once upon a time,'
+        best_of:
+          type: integer
+          nullable: true
+          minimum: 1
+          default: 1
+          description: Generates multiple completions server-side and returns the best one.
+          examples:
+            - 1
+        frequency_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          default: 0
+          description: Penalizes tokens based on their existing frequency in the text so far.
+          examples:
+            - 0
+        logit_bias:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: integer
+          description: Modify the likelihood of specified tokens appearing in the completion.
+          examples:
+            - "1234": -100
+        logprobs:
+          oneOf:
+            - type: boolean
+            - type: integer
+              minimum: 0
+            - type: 'null'
+          description: Include log probabilities on the logprobs most likely output tokens.
+          examples:
+            - false
+        max_tokens:
+          type: integer
+          nullable: true
+          minimum: 1
+          default: 16
+          description: The maximum number of tokens to generate.
+          examples:
+            - 2048
+        n:
+          type: integer
+          nullable: true
+          minimum: 1
+          default: 1
+          description: How many completions to generate for each prompt.
+          examples:
+            - 1
+        presence_penalty:
+          type: number
+          nullable: true
+          minimum: -2
+          maximum: 2
+          default: 0
+          description: Penalizes new tokens based on whether they appear in the text so far.
+          examples:
+            - 0
+        seed:
+          type: integer
+          nullable: true
+          format: int64
+          description: Seed for deterministic sampling.
+          examples:
+            - 42
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+              maxItems: 4
+            - type: 'null'
+          examples:
+            - forbidden word
+          description: Up to 4 sequences where the API will stop generating further tokens.
+        stream:
+          type: boolean
+          nullable: true
+          default: false
+          description: Whether to stream back partial progress.
+          examples:
+            - false
+        stream_options:
+          type: object
+          nullable: true
+          additionalProperties: true
+          description: Options for streaming responses.
+          examples:
+            - include_usage: true
+        suffix:
+          type: string
+          nullable: true
+          description: Suffix that comes after a completion of inserted text.
+          examples:
+            - ' the end.'
+        temperature:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 2
+          default: 1
+          description: Sampling temperature.
+          examples:
+            - 0.7
+        top_p:
+          type: number
+          nullable: true
+          minimum: 0
+          maximum: 1
+          default: 1
+          description: Nucleus sampling parameter.
+          examples:
+            - 1
+        user:
+          type: string
+          nullable: true
+          description: Unique identifier representing the end user.
+          examples:
+            - user-1234
+    CompletionResponse:
+      type: object
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+          description: A unique identifier for the completion
+          examples:
+            - cmpl-8f9a3b1c2d
+        object:
+          type: string
+          enum:
+            - text_completion
+          description: The object type
+          examples:
+            - text_completion
+        created:
+          type: integer
+          description: The Unix timestamp of when the completion was created
+          examples:
+            - 1717000000
+        model:
+          type: string
+          description: The model used for completion
+          examples:
+            - gpt-oss-20b
+        choices:
+          type: array
+          description: The list of completion choices
+          items:
+            type: object
+            required:
+              - text
+              - index
+              - finish_reason
+            properties:
+              text:
+                type: string
+                description: The generated text
+                examples:
+                  - Once upon a time, there was a small village.
+              index:
+                type: integer
+                description: The index of this choice
+                examples:
+                  - 0
+              finish_reason:
+                type: string
+                enum:
+                  - stop
+                  - length
+                description: The reason the model stopped generating
+                examples:
+                  - stop
+          examples:
+            -   - text: Once upon a time, there was a small village.
+                  index: 0
+                  finish_reason:
+                    - stop
+        usage:
+          type: object
+          required:
+            - prompt_tokens
+            - completion_tokens
+            - total_tokens
+          properties:
+            prompt_tokens:
+              type: integer
+              examples:
+                - 5
+            completion_tokens:
+              type: integer
+              examples:
+                - 12
+            total_tokens:
+              type: integer
+              examples:
+                - 17
+            prompt_tokens_details:
+              type: object
+              nullable: true
+              examples:
+                - null
+              description: Dettaglio dei token (oggetto) oppure null se non disponibile.
+            completions_tokens_details:
+              type: object
+              nullable: true
+              examples:
+                - null
+              description: Dettaglio dei token (oggetto) oppure null se non disponibile.
+    EmbeddingRequest:
+      type: object
+      required:
+        - model
+        - input
+      properties:
+        model:
+          type: string
+          description: ID of the model to use
+          examples:
+            - bge-m3
+        input:
+          oneOf:
+            - type: string
+              description: A single input text
+            - type: array
+              items:
+                type: string
+              description: An array of input texts
+          description: Input text to embed
+          examples:
+            - The quick brown fox jumps over the lazy dog.
+        encoding_format:
+          type: string
+          nullable: true
+          enum:
+            - float
+            - base64
+          default: float
+          description: The format to return the embeddings in
+          examples:
+            - base64
+    EmbeddingResponse:
+      type: object
+      required:
+        - object
+        - data
+        - model
+        - usage
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+          description: The object type, which is always 'list'
+          examples:
+            - list
+        data:
+          type: array
+          description: The list of embeddings generated
+          items:
+            type: object
+            required:
+              - object
+              - embedding
+              - index
+            properties:
+              object:
+                type: string
+                enum:
+                  - embedding
+                description: The object type
+                examples:
+                  - embedding
+              embedding:
+                type: array
+                items:
+                  type: number
+                description: The embedding vector
+                examples: [0.0023064255, -0.009327292, 0.015797347, '...']
+              index:
+                type: integer
+                description: The index of the embedding in the list
+                examples:
+                  - 0
+          examples:
+            - object: embedding
+              embedding: [0.0023064255, -0.009327292, 0.015797347, '...']
+              index: 0
+        model:
+          type: string
+          description: The model used to generate the embeddings
+          examples:
+            - bge-m3
+        usage:
+          type: object
+          required:
+            - prompt_tokens
+            - total_tokens
+          properties:
+            completion_tokens:
+              type: integer
+              description: The number of tokens in the output (always 0)
+              examples:
+                - 0
+            prompt_tokens:
+              type: integer
+              description: The number of tokens in the input
+              examples:
+                - 8
+            total_tokens:
+              type: integer
+              description: The total number of tokens used
+              examples:
+                - 8
+            completion_tokens_details:
+              type: object
+              nullable: true
+              examples:
+                - null
+              description: Dettaglio dei token (oggetto) oppure null se non disponibile.
+            prompt_tokens_details:
+              type: object
+              nullable: true
+              examples:
+                - null
+              description: Dettaglio dei token (oggetto) oppure null se non disponibile.
+    ResponsesRequest:
+      type: object
+      required:
+        - model
+        - input
+      properties:
+        model:
+          type: string
+          description: Identifier of the model to use.
+          examples:
+            - gpt-oss-20b
+        input:
+          description: Input provided to the model.
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+          examples:
+            - What is the capital of France?
+        instructions:
+          type: string
+          description: System-level instructions for the model.
+          examples:
+            - You are a concise, helpful assistant.
+        max_output_tokens:
+          type: integer
+          minimum: 1
+          description: Maximum number of tokens to generate.
+          examples:
+            - 512
+        reasoning:
+          type: object
+          description: Reasoning configuration.
+          properties:
+            effort:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+              examples:
+                - medium
+          examples:
+            - effort: medium
+        stream:
+          type: boolean
+          description: Whether to stream the response.
+          default: false
+          examples:
+            - false
+        stream_options:
+          type: object
+          description: Streaming options.
+          properties:
+            include_usage:
+              type: boolean
+              description: >-
+                If set, an additional chunk will be streamed with usage
+                statistics
+              examples:
+                - true
+          examples:
+            - include_usage: true
+        temperature:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 2
+          examples:
+            - 0.7
+        text:
+          type: object
+          description: Text output configuration.
+          properties:
+            format:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - text
+                  examples:
+                    - text
+              required:
+                - type
+              examples:
+                - type: text
+          examples:
+            - format:
+                type: text
+        parallel_tool_calls:
+          type: boolean
+          description: Whether multiple tool calls can be executed in parallel.
+          default: false
+          examples:
+            - false
+        tool_choice:
+          oneOf:
+            - type: string
+              enum:
+                - auto
+                - none
+                - required
+          description: Tool selection strategy.
+          examples:
+            - auto
+        max_tool_calls:
+          type: integer
+          minimum: 0
+          description: Maximum number of tool invocations.
+          examples:
+            - 5
+        tools:
+          type: array
+          description: Available tools for the model.
+          items:
+            type: object
+          examples:
+            -   - type: function
+                  function:
+                    name: get_current_weather
+                    description: Get the current weather for a given location
+                    parameters:
+                      type: object
+                      properties:
+                        location:
+                          type: string
+                      required:
+                        - location
+        top_p:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          examples:
+            - 1
+        top_logprobs:
+          type: integer
+          minimum: 0
+          examples:
+            - 5
+    ResponsesResponse:
+      type: object
+      required:
+        - id
+        - object
+        - created_at
+        - model
+        - output
+        - status
+        - usage
+      properties:
+        id:
+          type: string
+          examples:
+            - resp_1LixVZTqWVyHHEhdNuU62HoSp...
+        created_at:
+          type: integer
+          format: int64
+          examples:
+            - 1788793164
+        error:
+          examples:
+            - null
+        incomplete_details:
+          examples:
+            - null
+        instructions:
+          type: string
+          nullable: true
+          examples:
+            - You are a concise, helpful assistant.
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties: true
+          examples:
+            - null
+        model:
+          type: string
+          examples:
+            - gpt-oss-20b
+        object:
+          type: string
+          examples:
+            - response
+        output:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                examples:
+                  - rs_ac1efe8e6ad14aef
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    annotations:
+                      type: array
+                      items:
+                        type: object
+                      examples:
+                        - []
+                    text:
+                      type: string
+                      examples:
+                        - 'The user asks: "What is the capital of France?" The answer is Paris. According to the instruction: concise, helpful. So just answer: Paris.'
+                    type:
+                      type: string
+                      examples:
+                        - reasoning_text
+                    logprobs:
+                      examples:
+                        - null
+              role:
+                type: string
+                examples:
+                  - assistant
+              status:
+                type: string
+                examples:
+                  - completed
+              type:
+                type: string
+                examples:
+                  - reasoning
+              phase:
+                examples:
+                  - null
+          examples:
+            -   - id: rs_ac1efe8e6ad14aef
+                  summary: []
+                  type: reasoning
+                  content:
+                    - text: 'The user asks: "What is the capital of France?" The answer is Paris. According to the instruction: concise, helpful. So just answer: Paris.'
+                      type: reasoning_text
+                - id: msg_ae98c991dd0586f3
+                  content:
+                    - annotations: []
+                      text: Paris.
+                      type: output_text
+                      logprobs:
+                  role: assistant
+                  status: completed
+                  type: message
+                  phase:
+        parallel_tool_calls:
+          type: boolean
+          examples:
+            - false
+        temperature:
+          type: number
+          format: double
+          examples:
+            - 0.7
+        tool_choice:
+          type: string
+          examples:
+            - auto
+        tools:
+          type: array
+          items:
+            type: object
+          examples:
+            -   - name: ''
+                  parameters:
+                    type: object
+                  strict: false
+                  type: function
+                  defer_loading:
+                  description: ''
+        top_p:
+          type: number
+          format: double
+          examples:
+            - 1.0
+        max_output_tokens:
+          type: integer
+          examples:
+            - 512
+        previous_response_id:
+          type: string
+          nullable: true
+          examples:
+            - null
+        reasoning:
+          type: object
+          properties:
+            context:
+              examples:
+                - null
+            effort:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+              examples:
+                - medium
+            generate_summary:
+              examples:
+                - null
+            summary:
+              examples:
+                - null
+          examples:
+            - context:
+              effort: medium
+              generate_summary:
+              summary:
+        status:
+          type: string
+          examples:
+            - completed
+        text:
+          type: object
+          properties:
+            format:
+              type: object
+              properties:
+                type:
+                  type: string
+                  examples:
+                    - text
+              examples:
+                - type: text
+            verbosity:
+              examples:
+                - null
+          examples:
+            - format:
+                type: text
+              verbosity:
+        truncation:
+          type: string
+          examples:
+            - disabled
+        usage:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+              examples:
+                - 126
+            input_tokens_details:
+              type: object
+              properties:
+                audio_tokens:
+                  type: integer
+                  nullable: true
+                  examples:
+                    - null
+                cached_tokens:
+                  type: integer
+                  nullable: true
+                  examples:
+                    - 80
+                text_tokens:
+                  type: integer
+                  nullable: true
+                  examples:
+                    - null
+                input_tokens_per_turn:
+                  type: array
+                  items:
+                    type: integer
+                  examples:
+                    - [126]
+                cached_tokens_per_turn:
+                  type: array
+                  items:
+                    type: integer
+                  examples:
+                    - [80]
+              examples:
+                - audio_tokens:
+                  cached_tokens: 80
+                  text_tokens:
+                  input_tokens_per_turn: [126]
+                  cached_tokens_per_turn: [80]
+            output_tokens:
+              type: integer
+              examples:
+                - 44
+            output_tokens_details:
+              type: object
+              properties:
+                reasoning_tokens:
+                  type: integer
+                  examples:
+                    - 33
+                text_tokens:
+                  type: integer
+                  nullable: true
+                  examples:
+                    - null
+                tool_output_tokens:
+                  type: integer
+                  examples:
+                    - 0
+                output_tokens_per_turn:
+                  type: array
+                  items:
+                    type: integer
+                  examples:
+                    - [44]
+                tool_output_tokens_per_turn:
+                  type: array
+                  items:
+                    type: integer
+                  examples:
+                    - [0]
+              examples:
+                - reasoning_tokens: 33
+                  text_tokens:
+                  tool_output_tokens: 0
+                  output_tokens_per_turn: [44]
+                  tool_output_tokens_per_turn: [0]
+            total_tokens:
+              type: integer
+              examples:
+                - 170
+            cost:
+              examples:
+                - null
+          examples:
+            - input_tokens: 126
+              input_tokens_details:
+                audio_tokens:
+                cached_tokens: 80
+                text_tokens:
+                input_tokens_per_turn: [126]
+                cached_tokens_per_turn: [80]
+              output_tokens: 44
+              output_tokens_details:
+                reasoning_tokens: 33
+                text_tokens:
+                tool_output_tokens: 0
+                output_tokens_per_turn: [44]
+                tool_output_tokens_per_turn: [0]
+              total_tokens: 170
+              cost:
+        user:
+          examples:
+            - null
+        store:
+          examples:
+            - null
+        background:
+          type: boolean
+          examples:
+            - false
+        max_tool_calls:
+          type: integer
+          examples:
+            - 5
+        prompt:
+          examples:
+            - null
+        service_tier:
+          type: string
+          examples:
+            - auto
+        top_logprobs:
+          type: integer
+          nullable: true
+          examples:
+            - null
+        kv_transfer_params:
+          examples:
+            - null
+        input_messages:
+          examples:
+            - null
+        output_messages:
+          examples:
+            - null
+    ResponsesStreamResponse:
+      description: >-
+        Represents a single SSE event streamed from /v1/responses. The event's
+        "type" field determines which additional fields are present. Text output
+        is reconstructed by concatenating "delta" fields from
+        response.reasoning_text.delta and response.output_text.delta events,
+        grouped by item_id/content_index.
+      oneOf:
+        - $ref: '#/components/schemas/ResponsesStreamResponseCreated'
+        - $ref: '#/components/schemas/ResponsesStreamInProgress'
+        - $ref: '#/components/schemas/ResponsesStreamOutputItemAdded'
+        - $ref: '#/components/schemas/ResponsesStreamReasoningPartAdded'
+        - $ref: '#/components/schemas/ResponsesStreamReasoningTextDelta'
+        - $ref: '#/components/schemas/ResponsesStreamReasoningTextDone'
+        - $ref: '#/components/schemas/ResponsesStreamReasoningPartDone'
+        - $ref: '#/components/schemas/ResponsesStreamOutputItemDone'
+        - $ref: '#/components/schemas/ResponsesStreamContentPartAdded'
+        - $ref: '#/components/schemas/ResponsesStreamOutputTextDelta'
+        - $ref: '#/components/schemas/ResponsesStreamOutputTextDone'
+        - $ref: '#/components/schemas/ResponsesStreamContentPartDone'
+        - $ref: '#/components/schemas/ResponsesStreamCompleted'
+      discriminator:
+        propertyName: type
+        mapping:
+          response.created: '#/components/schemas/ResponsesStreamResponseCreated'
+          response.in_progress: '#/components/schemas/ResponsesStreamInProgress'
+          response.output_item.added: '#/components/schemas/ResponsesStreamOutputItemAdded'
+          response.reasoning_part.added: '#/components/schemas/ResponsesStreamReasoningPartAdded'
+          response.reasoning_text.delta: '#/components/schemas/ResponsesStreamReasoningTextDelta'
+          response.reasoning_text.done: '#/components/schemas/ResponsesStreamReasoningTextDone'
+          response.reasoning_part.done: '#/components/schemas/ResponsesStreamReasoningPartDone'
+          response.output_item.done: '#/components/schemas/ResponsesStreamOutputItemDone'
+          response.content_part.added: '#/components/schemas/ResponsesStreamContentPartAdded'
+          response.output_text.delta: '#/components/schemas/ResponsesStreamOutputTextDelta'
+          response.output_text.done: '#/components/schemas/ResponsesStreamOutputTextDone'
+          response.content_part.done: '#/components/schemas/ResponsesStreamContentPartDone'
+          response.completed: '#/components/schemas/ResponsesStreamCompleted'
+
+    ResponsesStreamResponseCreated:
+      type: object
+      required: [type, response, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.created]
+        response:
+          $ref: '#/components/schemas/ResponsesResponse'
+        sequence_number:
+          type: integer
+          examples: [0]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamInProgress:
+      type: object
+      required: [type, response, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.in_progress]
+        response:
+          $ref: '#/components/schemas/ResponsesResponse'
+        sequence_number:
+          type: integer
+          examples: [1]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamOutputItemAdded:
+      type: object
+      required: [type, output_index, item, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.output_item.added]
+        output_index:
+          type: integer
+          examples: [0]
+        item:
+          $ref: '#/components/schemas/ResponsesOutputItem'
+        sequence_number:
+          type: integer
+          examples: [2]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamReasoningPartAdded:
+      type: object
+      required: [type, content_index, item_id, output_index, part, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.reasoning_part.added]
+        content_index:
+          type: integer
+          examples: [0]
+        item_id:
+          type: string
+          examples: [msg_b203b6b1f79704b0]
+        output_index:
+          type: integer
+          examples: [0]
+        part:
+          type: object
+          properties:
+            text:
+              type: string
+              examples: ['']
+            type:
+              type: string
+              enum: [reasoning_text]
+        sequence_number:
+          type: integer
+          examples: [3]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamReasoningTextDelta:
+      type: object
+      required: [type, content_index, delta, item_id, output_index, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.reasoning_text.delta]
+        content_index:
+          type: integer
+          examples: [0]
+        delta:
+          type: string
+          description: Incremental reasoning text fragment
+          examples: [' capital']
+        item_id:
+          type: string
+          examples: [msg_b203b6b1f79704b0]
+        output_index:
+          type: integer
+          examples: [0]
+        sequence_number:
+          type: integer
+          examples: [13]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamReasoningTextDone:
+      type: object
+      required: [type, content_index, item_id, output_index, sequence_number, text, model]
+      properties:
+        type:
+          type: string
+          enum: [response.reasoning_text.done]
+        content_index:
+          type: integer
+          examples: [0]
+        item_id:
+          type: string
+          examples: [msg_b203b6b1f79704b0]
+        output_index:
+          type: integer
+          examples: [0]
+        sequence_number:
+          type: integer
+          examples: [22]
+        text:
+          type: string
+          description: Full accumulated reasoning text for this part
+          examples: ['User asks simple question: "What is the capital of France?" Straight answer: Paris.']
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamReasoningPartDone:
+      type: object
+      required: [type, content_index, item_id, output_index, part, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.reasoning_part.done]
+        content_index:
+          type: integer
+          examples: [0]
+        item_id:
+          type: string
+          examples: [msg_b203b6b1f79704b0]
+        output_index:
+          type: integer
+          examples: [0]
+        part:
+          type: object
+          properties:
+            text:
+              type: string
+              examples: ['User asks simple question: "What is the capital of France?" Straight answer: Paris.']
+            type:
+              type: string
+              enum: [reasoning_text]
+        sequence_number:
+          type: integer
+          examples: [23]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamOutputItemDone:
+      type: object
+      required: [type, output_index, item, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.output_item.done]
+        output_index:
+          type: integer
+          examples: [0, 1]
+        item:
+          $ref: '#/components/schemas/ResponsesOutputItem'
+        sequence_number:
+          type: integer
+          examples: [24, 38]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamContentPartAdded:
+      type: object
+      required: [type, item_id, output_index, content_index, part, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.content_part.added]
+        item_id:
+          type: string
+          examples: [msg_b74061de408cee12]
+        output_index:
+          type: integer
+          examples: [1]
+        content_index:
+          type: integer
+          examples: [1]
+        part:
+          type: object
+          properties:
+            annotations:
+              type: array
+              items: {}
+              examples: [[]]
+            text:
+              type: string
+              examples: ['']
+            type:
+              type: string
+              enum: [output_text]
+            logprobs:
+              type: array
+              items: {}
+              examples: [[]]
+        sequence_number:
+          type: integer
+          examples: [26]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamOutputTextDelta:
+      type: object
+      required: [type, item_id, output_index, content_index, delta, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.output_text.delta]
+        item_id:
+          type: string
+          examples: [msg_b74061de408cee12]
+        output_index:
+          type: integer
+          examples: [1]
+        content_index:
+          type: integer
+          examples: [1]
+        delta:
+          type: string
+          description: Incremental output text fragment
+          examples: ['Paris']
+        logprobs:
+          type: array
+          items: {}
+          examples: [[]]
+        sequence_number:
+          type: integer
+          examples: [33]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamOutputTextDone:
+      type: object
+      required: [type, item_id, output_index, content_index, text, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.output_text.done]
+        item_id:
+          type: string
+          examples: [msg_b74061de408cee12]
+        output_index:
+          type: integer
+          examples: [1]
+        content_index:
+          type: integer
+          examples: [1]
+        text:
+          type: string
+          description: Full accumulated output text for this content part
+          examples: ['The capital of France is **Paris**.']
+        logprobs:
+          type: array
+          items: {}
+          examples: [[]]
+        sequence_number:
+          type: integer
+          examples: [36]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamContentPartDone:
+      type: object
+      required: [type, item_id, output_index, content_index, part, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.content_part.done]
+        item_id:
+          type: string
+          examples: [msg_b74061de408cee12]
+        output_index:
+          type: integer
+          examples: [1]
+        content_index:
+          type: integer
+          examples: [1]
+        part:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [output_text]
+            text:
+              type: string
+              examples: ['The capital of France is **Paris**.']
+            annotations:
+              type: array
+              items: {}
+              examples: [[]]
+        sequence_number:
+          type: integer
+          examples: [37]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesStreamCompleted:
+      type: object
+      required: [type, response, sequence_number, model]
+      properties:
+        type:
+          type: string
+          enum: [response.completed]
+        response:
+          $ref: '#/components/schemas/ResponsesResponse'
+        sequence_number:
+          type: integer
+          examples: [39]
+        model:
+          type: string
+          examples: [gpt-oss-20b]
+
+    ResponsesOutputItem:
+      type: object
+      description: A single reasoning or message item in response.output
+      required: [id, type, status]
+      properties:
+        id:
+          type: string
+          examples: [msg_b203b6b1f79704b0, msg_b74061de408cee12]
+        type:
+          type: string
+          enum: [reasoning, message]
+        status:
+          type: string
+          enum: [in_progress, completed]
+        summary:
+          type: array
+          items: {}
+          examples: [[]]
+        role:
+          type: string
+          enum: [assistant]
+        content:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [reasoning_text, output_text]
+              text:
+                type: string
+              annotations:
+                type: array
+                items: {}
+              logprobs: {}
+    ImagesGenerationsRequest:
+      type: object
+      required:
+        - model
+        - prompt
+      properties:
+        model:
+          type: string
+          description: Identifier of the model to use.
+          examples:
+            - Qwen-Image-2512
+        prompt:
+          type: string
+          description: Prompt provided to the model.
+          examples:
+            - A watercolor painting of a lighthouse at sunset.
+        n:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: Number of images to generate.
+          examples:
+            - 1
+        size:
+          type: string
+          pattern: "^(0|[1-9][0-9]{0,2}|[1-4][0-9]{2}|512)x(0|[1-9][0-9]{0,2}|[1-4][0-9]{2}|512)$"
+          description: Image size between 1x1 and 512x512.
+          default: 512x512
+          examples:
+            - 512x512
+            - 256x256
+        style:
+          type: string
+          enum:
+            - vivid
+            - natural
+            - auto
+          examples:
+            - vivid
+            - natural
+            - auto
+        quality:
+          type: string
+          description: |
+            Quality of image to generate
+            **Note:** This property is accepted but ignored by the API.
+          enum:
+            - low
+            - standard
+            - hd
+          examples:
+            - standard
+        response_format:
+          type: string
+          description: |
+            Format of image to generate
+            **Note:** This property is accepted but ignored by the API.
+          default: b64_json
+          enum:
+            - url
+            - b64_json
+          examples:
+            - b64_json
+        user:
+          type: string
+          description: |
+            User that requested image generation.
+            **Note:** This property is accepted but ignored by the API.
+          examples:
+            - user-1234
+    ImagesGenerationsResponse:
+      type: object
+      required:
+        - created
+        - data
+        - size
+      properties:
+        created:
+          type: integer
+          format: int64
+          examples:
+            - 1717000000
+        background:
+          examples:
+            - null
+        data:
+          type: object
+          properties:
+            b64_json:
+              type: string
+              description: Base64-encoded image.
+              examples:
+                - iVBORw0KGgoAAAANSUhEUgAAAAUA...
+            revised_prompt:
+              type: string
+              nullable: true
+              examples:
+                - A soft watercolor painting of a lighthouse at sunset, with warm orange tones.
+            url:
+              type: string
+              nullable: true
+              format: uri
+              examples:
+                - null
+          examples:
+            - b64_json: iVBORw0KGgoAAAANSUhEUgAAAAUA...
+              revised_prompt: A soft watercolor painting of a lighthouse at sunset, with warm orange tones.
+              url:
+        output_format:
+          type: string
+          examples:
+            - png
+        quality:
+          examples:
+            - standard
+        size:
+          type: string
+          description: Image size.
+          examples:
+            - 512x512
+        usage:
+          type: object
+          properties:
+            total_tokens:
+              type: integer
+              examples:
+                - 0
+            input_tokens:
+              type: integer
+              examples:
+                - 20
+            input_tokens_details:
+              type: object
+              properties:
+                image_tokens:
+                  type: integer
+                  examples:
+                    - 0
+                text_tokens:
+                  type: integer
+                  examples:
+                    - 20
+              examples:
+                - image_tokens: 0
+                  text_tokens: 20
+            output_tokens:
+              type: integer
+              examples:
+                - 100
+          examples:
+            - total_tokens: 0
+              input_tokens: 0
+              input_tokens_details:
+                image_tokens: 0
+                text_tokens: 0
+              output_tokens: 0
+    ImagesEditsRequest:
+      type: object
+      required:
+        - image
+        - model
+        - prompt
+      properties:
+        image:
+          format: binary
+          description: Image to edit
+        model:
+          type: string
+          description: Identifier of the model to use.
+          examples:
+            - Qwen-Image-Edit-2511
+        prompt:
+          type: string
+          description: Prompt provided to the model.
+          examples:
+            - Add a rainbow in the sky above the lighthouse.
+        n:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: Number of images to generate.
+          examples:
+            - 1
+        size:
+          type: string
+          pattern: "^(0|[1-9][0-9]{0,2}|[1-4][0-9]{2}|512)x(0|[1-9][0-9]{0,2}|[1-4][0-9]{2}|512)$"
+          description: Image size between 1x1 and 512x512.
+          default: 512x512
+          examples:
+            - 512x512
+            - 256x256
+        quality:
+          type: string
+          description: |
+            Quality of image to generate by editing.
+            **Note:** This property is accepted but ignored by the API.
+          enum:
+            - low
+            - standard
+            - hd
+          examples:
+            - standard
+        mask:
+          type: string
+          description: |
+            Reference if the provided image is from url or by upload.
+            **Note:** This property is accepted but ignored by the API.
+          default: file_id
+          enum:
+            - image_url
+            - file_id
+          examples:
+            - file_id
+        user:
+          type: string
+          description: |
+            User that requested image edit.
+            **Note:** This property is accepted but ignored by the API.
+          examples:
+            - user-1234
+    ImagesEditsResponse:
+      type: object
+      required:
+        - created
+        - data
+        - size
+      properties:
+        created:
+          type: integer
+          format: int64
+          examples:
+            - 1717000000
+        background:
+          examples:
+            - null
+        data:
+          type: object
+          properties:
+            b64_json:
+              type: string
+              description: Base64-encoded image.
+              examples:
+                - iVBORw0KGgoAAAANSUhEUgAAAAUA...
+            revised_prompt:
+              type: string
+              nullable: true
+              examples:
+                - A lighthouse at sunset with a rainbow arching over the sky.
+            url:
+              type: string
+              nullable: true
+              format: uri
+              examples:
+                - null
+          examples:
+            - b64_json: iVBORw0KGgoAAAANSUhEUgAAAAUA...
+              revised_prompt: A lighthouse at sunset with a rainbow arching over the sky.
+              url:
+        output_format:
+          type: string
+          examples:
+            - png
+        quality:
+          examples:
+            - standard
+        size:
+          type: string
+          description: Image size.
+          examples:
+            - 512x512
+        usage:
+          type: object
+          properties:
+            total_tokens:
+              type: integer
+              examples:
+                - 140
+            input_tokens:
+              type: integer
+              examples:
+                - 40
+            input_tokens_details:
+              type: object
+              properties:
+                image_tokens:
+                  type: integer
+                  examples:
+                    - 20
+                text_tokens:
+                  type: integer
+                  examples:
+                    - 20
+              examples:
+                - image_tokens: 20
+                  text_tokens: 20
+            output_tokens:
+              type: integer
+              examples:
+                - 100
+          examples:
+            - total_tokens: 0
+              input_tokens: 0
+              input_tokens_details:
+                image_tokens: 0
+                text_tokens: 0
+              output_tokens: 0
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          examples:
+            - loc: [body, model]
+              msg: field required
+              type: value_error.missing
+    BadRequestError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+              examples:
+                - Requested model is invalid or unavailable.
+            type:
+              type: string
+              examples:
+                - None
+            param:
+              type: string
+              examples:
+                - None
+            code:
+              type: string
+              examples:
+                - 400
+          description: Error returned as response for invalid or missing model name
+    ValidationError:
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      properties:
+        loc:
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          description: Location of the error
+          examples: [body, model]
+        msg:
+          type: string
+          description: Error message
+          examples:
+            - field required
+        type:
+          type: string
+          description: Error type
+          examples:
+            - value_error.missing
+    Model:
+      type: object
+      required:
+        - id
+        - object
+        - created
+        - owned_by
+      properties:
+        id:
+          type: string
+          description: The model identifier
+          examples:
+            - gpt-oss-20b
+        object:
+          type: string
+          enum:
+            - model
+          description: The object type, which is always 'model'
+          examples:
+            - model
+        created:
+          type: integer
+          description: The Unix timestamp (in seconds) when the model was created
+          examples:
+            - 1717000000
+        owned_by:
+          type: string
+          description: The organization that owns the model
+          examples:
+            - openai
+    ModelList:
+      type: object
+      required:
+        - object
+        - data
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+          description: The object type, which is always 'list'
+          examples:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+          description: List of model objects
+          examples:
+            - id: gpt-oss-20b
+              object: model
+              created: 1717000000
+              owned_by: openai
+            - id: bge-m3
+              object: model
+              created: 1717000000
+              owned_by: baai
+
+  examples:
+    ChatCompletions:
+      Simple:
+        value:
+          model: gpt-oss-20b
+          messages:
+            - role: user
+              content: What is the capital of France?
+      StreamCall:
+        value:
+          model: gpt-oss-20b
+          messages:
+            - role: user
+              content: What is the capital of France?
+          stream: true
+          stream_options:
+            include_usage: true
+      WithLogprobs:
+        value:
+          model: gpt-oss-20b
+          messages:
+            - role: user
+              content: What is the capital of France?
+          logprobs: true
+          top_logprobs: 5
+      AllParams:
+        value:
+          model: gpt-oss-20b
+          messages:
+            - role: system
+              content: You are a helpful assistant.
+            - role: user
+              content: What is the capital of France?
+          frequency_penalty: 0
+          logit_bias:
+            "1": 0
+            "2": 0
+            "3": 0
+          max_tokens: 1024
+          n: 1
+          presence_penalty: 0
+          response_format:
+            type: text
+          seed: 42
+          stop: forbidden word
+          stream: false
+          stream_options:
+            include_usage: true
+          temperature: 0.7
+          top_p: 1
+          parallel_tool_calls: true
+          user: user-1234
+      Stream:
+        value: |
+          data: {"id":"chatcmpl-8f9a3b1c2d","object":"chat.completion.chunk","created":1717000000,"model":"gpt-oss-20b","choices":[{"index":0,"delta":{"role":"assistant","content":""},"finish_reason":null}]}
+
+          data: {"id":"chatcmpl-8f9a3b1c2d","object":"chat.completion.chunk","created":1717000000,"model":"gpt-oss-20b","choices":[{"index":0,"delta":{"content":"Paris"},"finish_reason":null}]}
+
+          data: {"id":"chatcmpl-8f9a3b1c2d","object":"chat.completion.chunk","created":1717000000,"model":"gpt-oss-20b","choices":[{"index":0,"delta":{},"finish_reason":"stop"}]}
+
+          data: {"id":"chatcmpl-8f9a3b1c2d","object":"chat.completion.chunk","created":1717000000,"model":"gpt-oss-20b","choices":[],"usage":{"prompt_tokens":15,"completion_tokens":8,"total_tokens":23}}
+
+          data: [DONE]
+    Completions:
+      Simple:
+        value:
+          model: gpt-oss-20b
+          prompt: 'Once upon a time,'
+      StreamCall:
+        value:
+          model: gpt-oss-20b
+          prompt: 'Once upon a time,'
+          stream: true
+          stream_options:
+            include_usage: true
+      AllParams:
+        value:
+          model: gpt-oss-20b
+          prompt: 'Once upon a time,'
+          best_of: 1
+          frequency_penalty: 0
+          logit_bias:
+            "1234": -100
+          max_tokens: 256
+          n: 1
+          presence_penalty: 0
+          seed: 42
+          stop: forbidden word
+          stream: false
+          suffix: ' the end.'
+          temperature: 0.7
+          top_p: 1
+          user: user-1234
+      Stream:
+        value: |
+          data: {"id":"cmpl-8f9a3b1c2d","object":"text_completion","created":1717000000,"model":"gpt-oss-20b","choices":[{"text":"Once","index":0,"finish_reason":null}]}
+
+          data: {"id":"cmpl-8f9a3b1c2d","object":"text_completion","created":1717000000,"model":"gpt-oss-20b","choices":[{"text":" upon a time,","index":0,"finish_reason":null}]}
+
+          data: {"id":"cmpl-8f9a3b1c2d","object":"text_completion","created":1717000000,"model":"gpt-oss-20b","choices":[{"text":"","index":0,"finish_reason":"stop"}]}
+
+          data: {"id":"cmpl-8f9a3b1c2d","object":"text_completion","created":1717000000,"model":"gpt-oss-20b","choices":[],"usage":{"prompt_tokens":5,"completion_tokens":12,"total_tokens":17}}
+
+          data: [DONE]
+    Embeddings:
+      Simple:
+        value:
+          model: bge-m3
+          input: The quick brown fox jumps over the lazy dog.
+      MultipleInputs:
+        value:
+          model: bge-m3
+          input:
+            - The quick brown fox jumps over the lazy dog.
+            - Milan is a city in northern Italy.
+      FloatEncoding:
+        value:
+          model: bge-m3
+          input: The quick brown fox jumps over the lazy dog.
+          encoding_format: float
+    Responses:
+      Simple:
+        value:
+          model: gpt-oss-20b
+          input: What is the capital of France?
+      EmbeddingBase64Response:
+        value:
+          model: bge-m3
+          data:
+            embedding: UMgBvXXHAz0LrEO95qlI...
+            index: 0,
+            object: embedding
+          object: list
+          usage:
+            completion_tokens: 0
+            prompt_tokens: 44
+            total_tokens: 44
+            completion_tokens_details:
+            prompt_tokens_details:
+      WithInstructionsAndReasoning:
+        value:
+          model: gpt-oss-20b
+          input: What is the weather like in the capital of France?
+          instructions: You are a concise, helpful assistant.
+          max_output_tokens: 512
+          reasoning:
+            effort: medium
+          temperature: 0.7
+          tools:
+            - type: function
+              function:
+                name: get_current_weather
+                description: Get the current weather for a given location
+                parameters:
+                  type: object
+                  properties:
+                    location:
+                      type: string
+                  required:
+                    - location
+          tool_choice: auto
+      StreamCall:
+        value:
+          model: gpt-oss-20b
+          input: What is the capital of France?
+          stream: true
+          stream_options:
+            include_usage: true
+      Stream:
+        value: |
+          data: {"type":"response.created","response":{"id":"resp_AZONkSmI8...","created_at":1788950306,"model":"gpt-oss-20b","object":"response","output":[],"parallel_tool_calls":true,"temperature":1.0,"tool_choice":"none","tools":[],"top_p":1.0,"max_output_tokens":127926,"status":"in_progress","truncation":"disabled","background":false,"service_tier":"auto","presence_penalty":0.0,"frequency_penalty":0.0},"sequence_number":0,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.in_progress","response":{"id":"resp_AZONkSmI8...","created_at":1788950306,"model":"gpt-oss-20b","object":"response","output":[],"parallel_tool_calls":true,"temperature":1.0,"tool_choice":"none","tools":[],"top_p":1.0,"max_output_tokens":127926,"status":"in_progress","truncation":"disabled","background":false,"service_tier":"auto","presence_penalty":0.0,"frequency_penalty":0.0},"sequence_number":1,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_item.added","output_index":0,"item":{"id":"msg_b203b6b1f79704b0","summary":[],"type":"reasoning","status":"in_progress"},"sequence_number":2,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_part.added","content_index":0,"item_id":"msg_b203b6b1f79704b0","output_index":0,"part":{"text":"","type":"reasoning_text"},"sequence_number":3,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.delta","content_index":0,"delta":"User","item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":4,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.delta","content_index":0,"delta":" asks","item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":5,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.delta","content_index":0,"delta":" simple","item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":6,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.delta","content_index":0,"delta":" question","item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":7,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.delta","content_index":0,"delta":": \"What","item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":8,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.delta","content_index":0,"delta":" is the capital of France?\"","item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":9,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.delta","content_index":0,"delta":" Straight answer: Paris.","item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":10,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_text.done","content_index":0,"item_id":"msg_b203b6b1f79704b0","output_index":0,"sequence_number":22,"text":"User asks simple question: \"What is the capital of France?\" Straight answer: Paris.","model":"gpt-oss-20b"}
+
+          data: {"type":"response.reasoning_part.done","content_index":0,"item_id":"msg_b203b6b1f79704b0","output_index":0,"part":{"text":"User asks simple question: \"What is the capital of France?\" Straight answer: Paris.","type":"reasoning_text"},"sequence_number":23,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_item.done","output_index":0,"sequence_number":24,"item":{"id":"msg_b203b6b1f79704b0","summary":[],"type":"reasoning","content":[{"text":"User asks simple question: \"What is the capital of France?\" Straight answer: Paris.","type":"reasoning_text"}],"status":"completed"},"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_item.added","output_index":1,"item":{"id":"msg_b74061de408cee12","content":[],"role":"assistant","status":"in_progress","type":"message"},"sequence_number":25,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.content_part.added","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"part":{"annotations":[],"text":"","type":"output_text","logprobs":[]},"sequence_number":26,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.delta","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"delta":"The","logprobs":[],"sequence_number":27,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.delta","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"delta":" capital","logprobs":[],"sequence_number":28,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.delta","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"delta":" of","logprobs":[],"sequence_number":29,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.delta","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"delta":" France","logprobs":[],"sequence_number":30,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.delta","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"delta":" is","logprobs":[],"sequence_number":31,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.delta","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"delta":" **Paris**","logprobs":[],"sequence_number":32,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.delta","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"delta":".","logprobs":[],"sequence_number":35,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_text.done","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"text":"The capital of France is **Paris**.","logprobs":[],"sequence_number":36,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.content_part.done","item_id":"msg_b74061de408cee12","output_index":1,"content_index":1,"part":{"type":"output_text","text":"The capital of France is **Paris**.","annotations":[]},"sequence_number":37,"model":"gpt-oss-20b"}
+
+          data: {"type":"response.output_item.done","output_index":1,"sequence_number":38,"item":{"id":"msg_b74061de408cee12","content":[{"annotations":[],"text":"The capital of France is **Paris**.","type":"output_text","logprobs":null}],"role":"assistant","status":"completed","type":"message"},"model":"gpt-oss-20b"}
+
+          data: {"type":"response.completed","response":{"id":"resp_AZONkSmI8...","created_at":1788950306,"model":"gpt-oss-20b","object":"response","output":[{"id":"rs_8728ae8ff9057799","summary":[],"type":"reasoning","content":[{"text":"User asks simple question: \"What is the capital of France?\" Straight answer: Paris.","type":"reasoning_text"}]},{"id":"msg_8be7c8528ed7a59a","content":[{"annotations":[],"text":"The capital of France is **Paris**.","type":"output_text"}],"role":"assistant","status":"completed","type":"message"}],"parallel_tool_calls":true,"temperature":1.0,"tool_choice":"none","tools":[],"top_p":1.0,"max_output_tokens":127926,"status":"completed","truncation":"disabled","usage":{"input_tokens":74,"input_tokens_details":{"cached_tokens":64,"input_tokens_per_turn":[74],"cached_tokens_per_turn":[64]},"output_tokens":37,"output_tokens_details":{"reasoning_tokens":19,"tool_output_tokens":0,"output_tokens_per_turn":[37],"tool_output_tokens_per_turn":[0]},"total_tokens":111},"background":false,"service_tier":"auto","presence_penalty":0.0,"frequency_penalty":0.0},"sequence_number":39,"model":"gpt-oss-20b"}
+
+          data: [DONE]
+    ImagesGenerations:
+      Simple:
+        value:
+          model: Qwen-Image-2512
+          prompt: A watercolor painting of a lighthouse at sunset.
+      AllParams:
+        value:
+          model: Qwen-Image-2512
+          prompt: A watercolor painting of a lighthouse at sunset.
+          n: 2
+          size: 512x512
+          style: vivid
+          quality: standard
+          response_format: b64_json
+          user: user-1234
+    ImagesEdits:
+      Simple:
+        value:
+          model: Qwen-Image-Edit-2511
+          prompt: Add a rainbow in the sky above the lighthouse.
+          image: (binary file, e.g. lighthouse.png)
+      AllParams:
+        value:
+          model: Qwen-Image-Edit-2511
+          prompt: Add a rainbow in the sky above the lighthouse.
+          image: (binary file, e.g. lighthouse.png)
+          n: 1
+          size: 512x512
+          quality: standard
+          mask: file_id
+          user: user-1234
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: 'JWT issued by the identity provider. Format: ''Bearer <token>'''
+      name: bearerAuth
+      scheme: bearer
+      bearerFormat: JWT

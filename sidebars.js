@@ -79,24 +79,20 @@ const sidebars = {
         slug: "docs/documents/compute/aruba-cmpservice-computing-api",
       },
       //items: versionedSidebar
-      items:[
+      items:[  
         {
           type: 'link',
-          label: 'Link to KB',
+          label: 'Link to KB', // The link label
           href: 'https://kb.cloud.it/cmp/computing.aspx',
-          description: 'Computing',
-        },
+          description: 'Computing', // The external URL
+        },  
         {
-          type: 'category',
-          label: '1.0',
-          items: require("./docs/documents/compute/sidebar.ts"),
-        },
-        {
-          type: 'category',
-          label: '1.1',
-          items: require("./docs/documents/compute/1.1/sidebar.ts"),
-        },
+          'v1.0': require("./docs/documents/compute/sidebar.ts")
+          ,
+          'v1.1': require("./docs/documents/compute/1.1/sidebar.ts")
+        }
       ]
+      //items: [require("./docs/documents/compute/sidebar.ts")]//,require("./docs/documents/compute/1.1/sidebar.ts")],
     },
     {
       type: "category",
@@ -223,7 +219,7 @@ const sidebars = {
       },
       items: require("./docs/documents/baremetal/sidebar.ts"),
     },
-            {
+    {
       type: "category",
       label: "Catalog",
       link: {
@@ -234,10 +230,58 @@ const sidebars = {
         slug: "docs/documents/sdn/aruba-catalog-api",
       },
       items: require("./docs/documents/catalog/sidebar.ts"),
+    },
+    {
+      type: "category",
+      label: "AiKey",
+      link: {
+        type: "generated-index",
+        title: "AI Keys API",
+        description:
+          "This is a description of api for interact with AI Keys API.",
+        slug: "docs/documents/aikeys/aruba-aikeys-api",
+      },
+      items: require("./docs/documents/aikeys/sidebar.ts"),
     }
-
-
   ],
+  documentsSidebarAI: [
+        {
+      type: "category",
+      label: "Introduction",
+      link: {
+        type: "generated-index",
+        title: "Introduction",
+        description: "The AIPlatform RESTful API is available over HTTPS with JSON as data format. The paradigm uses HTTP methods and HTTP status codes to specify requests and responses.",
+        slug: "docs/aiplatform/ai-authentication",
+      },
+      items: require("./docs/aiplatform/sidebar.ts"),
+    },
+    {
+      type: "category",
+      label: "AI Catalog",
+      link: {
+        type: "generated-index",
+        title: "AI Catalog API",
+        description:
+          "This is a description of api for interact with AI Catalog API.",
+        slug: "docs/documents/aimodels/aruba-ai-catalog-api",
+      },
+      items: require("./docs/documents/aimodels/sidebar.ts"),
+    },
+    {
+      type: "category",
+      label: "AI Text Management",
+      link: {
+        type: "generated-index",
+        title: "AI Text Management API",
+        description:
+          "This is a description of api for interact with AI Text Management API.",
+        slug: "docs/documents/aitextmanagement/aruba-ai-text-management-api",
+      },
+      items: require("./docs/documents/aitextmanagement/sidebar.ts"),
+    }
+  ]
+
   // versionedSidebar: {
   //   'v1.0': 
   //     require("./docs/documents/compute/sidebar.ts")

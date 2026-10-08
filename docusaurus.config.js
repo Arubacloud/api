@@ -15,10 +15,10 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: process.env.URL || 'https://your-docusaurus-site.example.com',
+  url: process.env.URL || 'https://arubacloud.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl:  process.env.BASE_URL || "/",
+  baseUrl:  process.env.BASE_URL || "/api/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -35,23 +35,21 @@ const config = {
     defaultLocale: 'en',
     locales: ['en','it'],
     localeConfigs: {
-      en: {
-        htmlLang: 'en-GB',
-      },
-      // You can omit a locale (e.g. fr) if you don't need to override the defaults
-      it: {
-        htmlLang:'it-IT',
-      },
-    },
+          en: {
+            label: 'English',
+            htmlLang: 'en-US',
+          },
+          // You can omit a locale (e.g. fr) if you don't need to override the defaults
+          it: {
+            label: 'Italiano',
+            htmlLang:'it-IT',
+          },
+        },
   },
   scripts: [
 
-    // {
-    //   src: '/js/datalayer.js',
-    //   async: false,
-    // },
-    {
-      src: '/js/gtmscript.js',
+     {
+      src: '/api/js/gtmscript.js',
       async: false,
     },
 
@@ -125,12 +123,52 @@ const config = {
             //href: ({ locale }) => locale === 'it' ?  'https://cloud.it/' : 'https://cloud.com/',
             label: "Aruba Home",
             position: "right",
+          },
+          {
+            href: "https://github.com/Arubacloud/api",
+            label: "GitHub",
+            position: "right",
           }
         ],
       },
       footer: {
         style: 'dark',
         links: [
+          {
+            title: 'Docs',
+            items: [
+              {
+                label: 'Getting Started',
+                to: '/docs/intro',
+              },
+              {
+                label: 'API Reference',
+                to: '/docs/intro',
+              },
+            ],
+          },
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/Arubacloud/api',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'Changelog',
+                to: '/docs/changelog',
+              },
+              {
+                label: 'Report an Issue',
+                href: 'https://github.com/Arubacloud/api/issues/new/choose',
+              },
+            ],
+          },
         ],
         copyright: `<div style="text-align: start;">
         <small>Copyright © ${new Date().getFullYear()} Aruba S.p.A. - via San Clemente, 53 - 24036 Ponte San Pietro (BG) <br>
@@ -176,26 +214,6 @@ const config = {
                 categoryLinkSource: "tag"
               }
             },
-            // container: {
-            //   specPath: "static/openapi/container-provider.json",
-            //   outputDir: "docs/documents/container",
-            //   label: "Container",
-            //   proxy: process.env.PROXY_URL,
-            //   sidebarOptions: {
-            //     groupPathsBy: "tag",
-            //     categoryLinkSource: "tag"
-            //   }
-            // },
-            // network: {
-            //   specPath: "static/openapi/network-provider.json",
-            //   outputDir: "docs/documents/network",
-            //   label: "Network",
-            //   proxy: process.env.PROXY_URL,
-            //   sidebarOptions: {
-            //     groupPathsBy: "tag",
-            //     categoryLinkSource: "tag"
-            //   }
-            // }
             storage: {
               specPath: "static/openapi/storage-provider.json",
               outputDir: "docs/documents/storage",
@@ -233,17 +251,13 @@ const config = {
                   outputDir: "docs/documents/compute/1.1",
                   label: "1.1",
                   baseUrl: "docs/documents/compute/1.1/aruba-cmpservice-computing-api",
-                   //"/docs/documents/compute/1.1/aruba-cmpservice-computing-api",
                 }
               }
-
             },
             network: {
               specPath: "static/openapi/network-provider.json",
               outputDir: "docs/documents/network",
               label: "Network",
-              
-              //proxy: process.env.PROXY_URL,
               sidebarOptions: {
                 groupPathsBy: "tag",
                 categoryLinkSource: "tag"
@@ -252,9 +266,7 @@ const config = {
             project: {
               specPath: "static/openapi/project.json",
               outputDir: "docs/documents/project",
-              //baseUrl: "test_address",
               label: "Project",
-              //proxy: process.env.PROXY_URL,
               sidebarOptions: {
                 groupPathsBy: "tag",
                 categoryLinkSource: "tag"
@@ -263,9 +275,7 @@ const config = {
             security: {
               specPath: "static/openapi/security-provider.json",
               outputDir: "docs/documents/security",
-              //baseUrl: "test_address",
               label: "Security",
-              //proxy: process.env.PROXY_URL,
               sidebarOptions: {
                 groupPathsBy: "tag",
                 categoryLinkSource: "tag"
@@ -349,7 +359,21 @@ const config = {
       ],
       [
         require.resolve('./plugins/custom-encoding'),{}
-      ]
+      ],
+      function webpackFallbackPlugin() {
+        return {
+          name: 'webpack-fallback-plugin',
+          configureWebpack() {
+            return {
+              resolve: {
+                fallback: {
+                  path: false,
+                },
+              },
+            };
+          },
+        };
+      },
      ]
 };
 

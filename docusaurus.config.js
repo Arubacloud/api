@@ -284,12 +284,23 @@ const config = {
             databse: {
               specPath: "static/openapi/database-provider.json",
               outputDir: "docs/documents/database",
-              label: "DBaaS",
+              label: "1.0",
+              version: "1.0",
+              baseUrl: "docs/documents/database/aruba-cmpservice-databaseprovider-api",
               //proxy: process.env.PROXY_URL,
               sidebarOptions: {
                 groupPathsBy: "tag",
                 categoryLinkSource: "tag"
+              },
+              versions: {
+                "1.1": {
+                  specPath: "static/openapi/database-provider_v1.1.json",
+                  outputDir: "docs/documents/database/1.1",
+                  label: "1.1",
+                  baseUrl: "docs/documents/database/1.1/aruba-cmpservice-databaseprovider-api",
+                }
               }
+
             },
             schedule:{
               specPath: "static/openapi/schedule-provider.json",

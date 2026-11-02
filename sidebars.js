@@ -143,7 +143,13 @@ const sidebars = {
           "This is a description of api for interact with DBaaS API.",
         slug: "docs/documents/database/aruba-database-provider-api",
       },
-      items: require("./docs/documents/database/sidebar.ts"),
+      items: [
+        {
+          'v1.0': require("./docs/documents/database/sidebar.ts")
+          ,
+          'v1.1': require("./docs/documents/database/1.1/sidebar.ts")
+        }
+      ]
     },  
     {
       type: "category",

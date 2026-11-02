@@ -1,26 +1,31 @@
 (function (w, d) {
   w.dataLayer = w.dataLayer || [];
+  var previousPageUrl = d.referrer;
   w.pushPageview = function (pathname) {
     var lang = (d.documentElement.lang || 'en').substring(0, 2);
-    w.dataLayer.push({
+    var pageview = {
       event: 'pageview',
       environment: 'prod',
       platform: 'web',
       page_type: 'site',
       order_type: '',
-      user: {},
+      user: {
+        login_state: 'guest',
+       },
       lang: lang,
       page: {
-        url: pathname || w.location.pathname,
+        url: w.location.href,
         title: d.title,
-        referrer: d.referrer,
+        referrer: previousPageUrl,
         cart_id: '',
       },
-    });
+    };
+    w.dataLayer.push(pageview);
+    previousPageUrl = pageview.page.url;
     w.__initialPageviewPath = pathname || w.location.pathname;
   };
 
-  // Deve essere eseguito prima dello snippet GTM, così il container trova i dati già nel dataLayer
+  
   w.pushPageview(w.location.pathname);
 })(window, document);
 
